@@ -9,5 +9,4 @@ class TypeSpeederApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

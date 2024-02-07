@@ -8,6 +8,7 @@ public class TypeSpeederApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(TypeSpeederApplication.class, args);
+        System.out.println("Yo");
 
     }
 
