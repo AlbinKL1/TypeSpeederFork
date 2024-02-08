@@ -7,7 +7,6 @@ import se.ju23.typespeeder.IO.IO;
 import se.ju23.typespeeder.IO.SystemIO;
 import se.ju23.typespeeder.TypeSpeederGameLogic.Controller;
 
-
 import java.sql.SQLException;
 
 @SpringBootApplication
