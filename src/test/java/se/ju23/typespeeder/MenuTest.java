@@ -8,6 +8,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
 import org.mockito.Mockito;
+import se.ju23.typespeeder.Menu.Menu;
+import se.ju23.typespeeder.Menu.MenuService;
 
 import static org.mockito.Mockito.*;
 
@@ -92,6 +94,4 @@ public class MenuTest {
         long count = outContent.toString().lines().count();
         assertTrue(count >= 5, "The menu should print out at least 5 alternatives.");
     }
-
-
 }
