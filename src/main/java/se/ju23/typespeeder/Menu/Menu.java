@@ -1,16 +1,24 @@
 package se.ju23.typespeeder.Menu;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Component
 public class Menu implements MenuService {
-    private Scanner input;
 
-    public Menu() {
+    private Scanner input;
+    private final PlayerRepo playerRepo;
+
+    @Autowired
+    public Menu(PlayerRepo playerRepo) {
+        this.playerRepo = playerRepo;
         this.input = new Scanner(System.in);
     }
-
     @Override
     public void displayMenu() {
         System.out.println("Welcome to TypeSpeeder!");
@@ -22,24 +30,31 @@ public class Menu implements MenuService {
         input.nextLine();
 
         switch (choice) {
-            case 1:
+            case 1 ->
                 login();
-                break;
-            case 2:
+            case 2 ->
                 createAccount();
-                break;
-            case 3:
+            case 3 -> {
                 System.out.println("Exiting...");
                 System.exit(0);
-                break;
-            default:
+            }
+            default ->
                 System.out.println("Invalid choice. Please try again.");
         }
     }
 
     private void login() {
-        System.out.println("Login");
-        selectLanguage();
+        System.out.print("Enter username: ");
+        String username = input.nextLine();
+        System.out.print("Enter password: ");
+        String password = input.nextLine();
+
+        Player player = playerRepo.findByUsernameAndPassword(username, password);
+        if (player != null) {
+            System.out.println("Login successful. Welcome, " + player.getDisplayname() + "!");
+        } else {
+            System.out.println("Invalid username or password. Please try again.");
+        }
     }
 
     private void createAccount() {
