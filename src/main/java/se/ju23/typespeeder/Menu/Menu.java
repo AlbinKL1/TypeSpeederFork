@@ -3,6 +3,7 @@ package se.ju23.typespeeder.Menu;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.ju23.typespeeder.Player.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +13,13 @@ import java.util.Scanner;
 public class Menu implements MenuService {
 
     private Scanner input;
-    private final PlayerRepo playerRepo;
+    private final LoginService loginService;
+    private final AccountCreationService accountCreationService;
 
     @Autowired
-    public Menu(PlayerRepo playerRepo) {
-        this.playerRepo = playerRepo;
+    public Menu(LoginService loginService,AccountCreationService accountCreationService) {
+        this.loginService = loginService;
+        this.accountCreationService = accountCreationService;
         this.input = new Scanner(System.in);
     }
     @Override
@@ -44,22 +47,22 @@ public class Menu implements MenuService {
     }
 
     private void login() {
+
         System.out.print("Enter username: ");
         String username = input.nextLine();
         System.out.print("Enter password: ");
         String password = input.nextLine();
-
-        Player player = playerRepo.findByUsernameAndPassword(username, password);
-        if (player != null) {
-            System.out.println("Login successful. Welcome, " + player.getDisplayname() + "!");
-        } else {
-            System.out.println("Invalid username or password. Please try again.");
-        }
+        loginService.login(username, password);
     }
 
     private void createAccount() {
-        System.out.println("Create Account");
-        selectLanguage();
+        System.out.print("Enter username: ");
+        String username = input.nextLine();
+        System.out.print("Enter password: ");
+        String password = input.nextLine();
+        System.out.print("Enter display name: ");
+        String displayName = input.nextLine();
+        accountCreationService.createAccount(username, password, displayName);
     }
 
     private void selectLanguage() {

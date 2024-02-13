@@ -7,9 +7,11 @@ import org.junit.jupiter.api.BeforeEach;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
+
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import se.ju23.typespeeder.Menu.Menu;
-import se.ju23.typespeeder.Menu.MenuService;
+import se.ju23.typespeeder.Menu.*;
+import se.ju23.typespeeder.Player.*;
 
 import static org.mockito.Mockito.*;
 
@@ -19,6 +21,9 @@ public class MenuTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
+
+    @Mock
+    PlayerRepo playerRepoMock;
 
     @BeforeEach
     public void setUpStreams() {
@@ -75,7 +80,7 @@ public class MenuTest {
 
     @Test
     public void testDisplayMenuCallsGetMenuOptionsAndReturnsAtLeastFive() {
-        Menu menuMock = Mockito.spy(new Menu());
+        Menu menuMock = Mockito.spy(new Menu(playerRepoMock));
         menuMock.displayMenu();
         verify(menuMock, times(1)).getMenuOptions();
         assertTrue(menuMock.getMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
@@ -83,14 +88,14 @@ public class MenuTest {
 
     @Test
     public void menuShouldHaveAtLeastFiveOptions() {
-        Menu menu = new Menu();
+        Menu menu = new Menu(playerRepoMock);
         List<String> options = menu.getMenuOptions();
         assertTrue(options.size() >= 5, "The menu should contain at least 5 alternatives.");
     }
 
     @Test
     public void menuShouldPrintAtLeastFiveOptions() {
-        new Menu().displayMenu();
+        new Menu(playerRepoMock).displayMenu();
         long count = outContent.toString().lines().count();
         assertTrue(count >= 5, "The menu should print out at least 5 alternatives.");
     }

@@ -1,4 +1,4 @@
-package se.ju23.typespeeder.Menu;
+package se.ju23.typespeeder.Player;
 
 import jakarta.persistence.*;
 
