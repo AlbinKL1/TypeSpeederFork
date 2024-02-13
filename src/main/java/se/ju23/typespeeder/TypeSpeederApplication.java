@@ -21,6 +21,6 @@ public class TypeSpeederApplication implements CommandLineRunner {
     }
     @Override
     public void run(String[] args) throws Exception {
-        menu.displayMenu();
+        menu.loginMenu();
     }
 }

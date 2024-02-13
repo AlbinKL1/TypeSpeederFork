@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface MenuService {
 
+    void loginMenu();
     void displayMenu();
     List<String> getMenuOptions();
 }
