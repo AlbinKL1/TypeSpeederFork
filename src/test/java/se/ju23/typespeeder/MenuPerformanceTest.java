@@ -1,6 +1,9 @@
 package se.ju23.typespeeder;
 
 import org.junit.jupiter.api.Test;
+import se.ju23.typespeeder.Challenge.Challenge;
+import se.ju23.typespeeder.Menu.LoginService;
+import se.ju23.typespeeder.Menu.Menu;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,11 +17,14 @@ public class MenuPerformanceTest {
     private static final int MAX_EXECUTION_TIME_MENU = 1;
     private static final int MAX_EXECUTION_TIME_LANGUAGE_SELECTION = 100;
     private static final int MILLISECONDS_CONVERSION = 1_000_000;
+    private LoginService loginService;
+    private  Challenge challenge;
+
 
     @Test
     public void testGetMenuOptionsExecutionTime() {
         long startTime = System.nanoTime();
-        Menu menu = new Menu();
+        Menu menu = new Menu(loginService,challenge);
         menu.getMenuOptions();
         long endTime = System.nanoTime();
 
@@ -38,7 +44,7 @@ public class MenuPerformanceTest {
 
         long startTime = System.nanoTime();
 
-        Menu menu = new Menu();
+        Menu menu = new Menu(loginService,challenge);
         menu.displayMenu();
 
         long endTime = System.nanoTime();

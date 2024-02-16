@@ -3,7 +3,7 @@ package se.ju23.typespeeder.Menu;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.ju23.typespeeder.Player.*;
+import se.ju23.typespeeder.Challenge.Challenge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +14,12 @@ public class Menu implements MenuService {
 
     private Scanner input;
     private final LoginService loginService;
-    private final AccountCreationService accountCreationService;
+    private final Challenge challenge;
 
     @Autowired
-    public Menu(LoginService loginService,AccountCreationService accountCreationService) {
+    public Menu(LoginService loginService, Challenge challenge) {
         this.loginService = loginService;
-        this.accountCreationService = accountCreationService;
+        this.challenge = challenge;
         this.input = new Scanner(System.in);
     }
     @Override
@@ -66,7 +66,7 @@ public class Menu implements MenuService {
         String password = input.nextLine();
         System.out.print("Enter display name: ");
         String displayName = input.nextLine();
-        accountCreationService.createAccount(username, password, displayName);
+        loginService.createAccount(username, password, displayName);
         loginMenu();
     }
 
@@ -93,7 +93,7 @@ public class Menu implements MenuService {
             input.nextLine();
 
             switch (choice) {
-                case 1 -> typeSpeeder();
+                case 1 -> challenge.startChallenge();
                 case 2 -> rankingList();
                 case 3 -> editPlayer();
                 case 4 -> viewPlayerLevelAndPoints();
@@ -102,9 +102,6 @@ public class Menu implements MenuService {
                 default -> System.out.println("Invalid choice. Please try again.");
             }
         }while(continueLoop);
-    }
-
-    private void typeSpeeder() {
     }
 
     private void rankingList() {

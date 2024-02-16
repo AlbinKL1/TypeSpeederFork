@@ -12,6 +12,7 @@ import java.io.PrintStream;
 import java.util.List;
 
 import org.mockito.Mockito;
+import se.ju23.typespeeder.Challenge.Challenge;
 import se.ju23.typespeeder.Menu.*;
 
 import static org.mockito.Mockito.*;
@@ -23,7 +24,8 @@ public class MenuTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private LoginService loginService;
-    private  AccountCreationService accountCreationService;
+
+    private Challenge challenge;
 
     @BeforeEach
     public void setUpStreams() {
@@ -80,7 +82,7 @@ public class MenuTest {
 
     @Test
     public void testDisplayMenuCallsGetMenuOptionsAndReturnsAtLeastFive() {
-        Menu menuMock = Mockito.spy(new Menu(loginService,accountCreationService));
+        Menu menuMock = Mockito.spy(new Menu(loginService,challenge));
         menuMock.displayMenu();
         verify(menuMock, times(1)).getMenuOptions();
         assertTrue(menuMock.getMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
@@ -88,14 +90,14 @@ public class MenuTest {
 
     @Test
     public void menuShouldHaveAtLeastFiveOptions() {
-        Menu menu = new Menu(loginService,accountCreationService);
+        Menu menu = new Menu(loginService,challenge);
         List<String> options = menu.getMenuOptions();
         assertTrue(options.size() >= 5, "The menu should contain at least 5 alternatives.");
     }
 
     @Test
     public void menuShouldPrintAtLeastFiveOptions() {
-        new Menu(loginService,accountCreationService).displayMenu();
+        new Menu(loginService,challenge).displayMenu();
         long count = outContent.toString().lines().count();
         assertTrue(count >= 5, "The menu should print out at least 5 alternatives.");
     }
@@ -108,7 +110,7 @@ public class MenuTest {
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        Menu menu = new Menu(loginService,accountCreationService);
+        Menu menu = new Menu(loginService,challenge);
         menu.displayMenu();
 
         String consoleOutput = outContent.toString();
