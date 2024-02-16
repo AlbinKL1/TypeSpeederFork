@@ -83,47 +83,47 @@ public class Challenge {
         
     }
 
-    private void lettersToType(List<String> letters) {
+    public void lettersToType(List<String> letters) {
         System.out.println("Playing Letters.");
     }
 
-    private void wordsToType(List<String> words) {
+    public void wordsToType(List<String> words) {
         System.out.println("Playing Words.");
     }
 
-    private void sentencesToType(List<String> sentences) {
+    public void sentencesToType(List<String> sentences) {
         System.out.println("Playing Sentences.");
     }
 
-    private void lettersAndSymbolsToType(List<String> letters, List<String> symbols) {
+    public void lettersAndSymbolsToType(List<String> letters, List<String> symbols) {
         System.out.println("Playing Letters and Symbols.");
     }
 
-    private void wordsAndSymbolsToType(List<String> words, List<String> symbols) {
+    public void wordsAndSymbolsToType(List<String> words, List<String> symbols) {
         System.out.println("Playing Words and Symbols.");
     }
 
-    private void sentencesAndSymbolsToType(List<String> sentences, List<String> symbols) {
+    public void sentencesAndSymbolsToType(List<String> sentences, List<String> symbols) {
         System.out.println("Playing Sentences and Symbols.");
     }
 
-    private void lettersAndWordsToType(List<String> letters, List<String> words) {
+    public void lettersAndWordsToType(List<String> letters, List<String> words) {
         System.out.println("Playing Letters and Words .");
     }
 
-    private void lettersAndSentencesToType(List<String> letters, List<String> sentences) {
+    public void lettersAndSentencesToType(List<String> letters, List<String> sentences) {
         System.out.println("Playing Letters and Sentences.");
     }
 
-    private void wordsAndSentencesToType(List<String> words, List<String> sentences) {
+    public void wordsAndSentencesToType(List<String> words, List<String> sentences) {
         System.out.println("Playing Words and Sentences.");
     }
 
-    private void lettersWordsAndSentencesToType(List<String> letters, List<String> words, List<String> sentences) {
+    public void lettersWordsAndSentencesToType(List<String> letters, List<String> words, List<String> sentences) {
         System.out.println("Playing Letters,Words and Sentences.");
     }
 
-    private void lettersWordsSymbolsAndSentencesToType(List<String> letters, List<String> words, List<String> symbols, List<String> sentences) {
+    public void lettersWordsSymbolsAndSentencesToType(List<String> letters, List<String> words, List<String> symbols, List<String> sentences) {
         System.out.println("Playing Letters,Words,Symbols and Sentences.");
     }
 }

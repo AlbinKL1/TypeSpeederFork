@@ -15,6 +15,7 @@ public class Menu implements MenuService {
     private Scanner input;
     private final LoginService loginService;
     private final Challenge challenge;
+    private String loggedInUsername;
 
     @Autowired
     public Menu(LoginService loginService, Challenge challenge) {
@@ -24,39 +25,48 @@ public class Menu implements MenuService {
     }
     @Override
     public void loginMenu() {
-
         boolean continueLoop = true;
 
-        do{
+        do {
             System.out.println("""
-                
-                Welcome to TypeSpeeder
-                
-                1. Login.
-                2. Create account.
-                0. Exit program.
-                """);
+                                
+                    Welcome to TypeSpeeder
+                                    
+                    1. Login.
+                    2. Create account.
+                    0. Exit program.
+                    """);
 
             System.out.print("Your choice: ");
             int choice = input.nextInt();
             input.nextLine();
 
             switch (choice) {
-                case 1 -> login();
+                case 1 -> {
+                    String username = login();
+                    if (username != null) {
+                        loggedInUsername = username;
+                        displayMenu();
+                    }
+                }
                 case 2 -> createAccount();
                 case 0 -> continueLoop = false;
                 default -> System.out.println("Invalid choice. Please try again.");
             }
-        }while(continueLoop);
+        } while (continueLoop);
     }
 
-    private void login() {
+    private String login() {
         System.out.print("Enter username: ");
         String username = input.nextLine();
         System.out.print("Enter password: ");
         String password = input.nextLine();
-        loginService.login(username, password);
-        displayMenu();
+        if (loginService.login(username, password)) {
+            return username;
+        } else {
+            System.out.println("Login failed. Please try again.");
+            return null;
+        }
     }
 
     private void createAccount() {
@@ -69,6 +79,7 @@ public class Menu implements MenuService {
         loginService.createAccount(username, password, displayName);
         loginMenu();
     }
+
 
     @Override
     public void displayMenu(){
@@ -109,6 +120,51 @@ public class Menu implements MenuService {
     }
 
     private void editPlayer() {
+
+        boolean continueLoop = true;
+
+        do{
+            System.out.println("""
+                
+                Edit Player menu
+                
+                1. Edit username.
+                2. Edit password.
+                3. Edit display name.
+                0. back.
+                """);
+
+            System.out.print("Your choice: ");
+            int choice = input.nextInt();
+            input.nextLine();
+
+            switch (choice) {
+                case 1 -> editUsername();
+                case 2 -> editPassword();
+                case 3 -> editDisplayName();
+                case 0 -> continueLoop = false;
+                default -> System.out.println("Invalid choice. Please try again.");
+            }
+        }while(continueLoop);
+
+    }
+
+    private void editUsername() {
+        System.out.print("Enter new username: ");
+        String newUsername = input.nextLine();
+        loginService.editUsername(loggedInUsername, newUsername);
+    }
+
+    private void editPassword() {
+        System.out.print("Enter new password: ");
+        String newPassword = input.nextLine();
+        loginService.editPassword(loggedInUsername, newPassword);
+    }
+
+    private void editDisplayName() {
+        System.out.print("Enter new display name: ");
+        String newDisplayName = input.nextLine();
+        loginService.editDisplayName(loggedInUsername, newDisplayName);
     }
 
     private void viewPlayerLevelAndPoints() {

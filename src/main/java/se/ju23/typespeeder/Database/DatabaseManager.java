@@ -2,21 +2,26 @@ package se.ju23.typespeeder.Database;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+
+
 @Component
+@Transactional
 public class DatabaseManager {
 
     @Autowired
     private EntityManager entityManager;
 
 
-    public List<String> getEnglishLetters () {
+    public List<String> getEnglishLetters() {
         return fetchData("SELECT letter FROM letters WHERE languageid = 1");
     }
+
     public List<String> getEnglishWords() {
         return fetchData("SELECT word FROM words WHERE languageid = 1");
     }
@@ -28,7 +33,8 @@ public class DatabaseManager {
     public List<String> getEnglishSentences() {
         return fetchData("SELECT sentence FROM sentences WHERE languageid = 1");
     }
-    public List<String> getSwedishLetters () {
+
+    public List<String> getSwedishLetters() {
         return fetchData("SELECT letter FROM letters WHERE languageid = 2");
     }
 
@@ -48,6 +54,7 @@ public class DatabaseManager {
         Query nativeQuery = entityManager.createNativeQuery(query);
         return nativeQuery.getResultList();
     }
+
     public void createPlayer(String username, String password, String displayName) {
         String queryStr = "INSERT INTO Player (username, password, display_name) VALUES (?, ?, ?)";
         Query query = entityManager.createNativeQuery(queryStr);
@@ -62,7 +69,7 @@ public class DatabaseManager {
         Query query = entityManager.createNativeQuery(queryStr);
         query.setParameter(1, username);
         List<?> results = query.getResultList();
-        return ((Number)results.get(0)).intValue() > 0;
+        return ((Number) results.get(0)).intValue() > 0;
     }
 
     public String getPlayerByUsernameAndPassword(String username, String password) {
@@ -78,4 +85,30 @@ public class DatabaseManager {
         return null;
     }
 
+    public void updateUsername(String oldUsername, String newUsername) {
+        String queryStr = "UPDATE Player SET username = ? WHERE username = ?";
+        Query query = entityManager.createNativeQuery(queryStr);
+        query.setParameter(1, newUsername);
+        query.setParameter(2, oldUsername);
+        query.executeUpdate();
+    }
+
+
+    public void updatePassword(String username, String newPassword) {
+        String queryStr = "UPDATE Player SET password = ? WHERE username = ?";
+        Query query = entityManager.createNativeQuery(queryStr);
+        query.setParameter(1, newPassword);
+        query.setParameter(2, username);
+        query.executeUpdate();
+    }
+
+    public void updateDisplayName(String username, String newDisplayName) {
+        String queryStr = "UPDATE Player SET displayname = ? WHERE username = ?";
+        Query query = entityManager.createNativeQuery(queryStr);
+        query.setParameter(1, newDisplayName);
+        query.setParameter(2, username);
+        query.executeUpdate();
+
+
+    }
 }

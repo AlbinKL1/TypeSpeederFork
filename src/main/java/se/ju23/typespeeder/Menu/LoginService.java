@@ -13,12 +13,14 @@ public class LoginService {
         this.databaseManager = databaseManager;
     }
 
-    public void login(String username, String password) {
+    public boolean login(String username, String password) {
         String displayName = databaseManager.getPlayerByUsernameAndPassword(username, password);
         if (displayName != null) {
             System.out.println("Login successful. Welcome, " + displayName + "!");
+            return true;
         } else {
             System.out.println("Invalid username or password. Please try again.");
+            return false;
         }
     }
 
@@ -29,5 +31,19 @@ public class LoginService {
         }
         databaseManager.createPlayer(username, password, displayName);
         System.out.println("Account created successfully!");
+    }
+    public void editUsername(String username, String newUsername) {
+        databaseManager.updateUsername(username, newUsername);
+        System.out.println("Username updated successfully!");
+    }
+
+    public void editPassword(String username, String newPassword) {
+        databaseManager.updatePassword(username, newPassword);
+        System.out.println("Password updated successfully!");
+    }
+
+    public void editDisplayName(String username, String newDisplayName) {
+        databaseManager.updateDisplayName(username, newDisplayName);
+        System.out.println("Display name updated successfully!");
     }
 }
