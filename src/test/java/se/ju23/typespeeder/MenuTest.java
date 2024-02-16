@@ -108,7 +108,7 @@ public class MenuTest {
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        Menu menu = new Menu();
+        Menu menu = new Menu(loginService,accountCreationService);
         menu.displayMenu();
 
         String consoleOutput = outContent.toString();
