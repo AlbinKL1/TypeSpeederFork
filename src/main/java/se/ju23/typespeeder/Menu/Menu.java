@@ -179,12 +179,15 @@ public class Menu implements MenuService {
     private void viewPatchNotes() {
     }
 
+
     @Override
     public List<String> getMenuOptions() {
         List<String> options = new ArrayList<>();
-        options.add("Login");
-        options.add("Create Account");
-        options.add("Exit");
+        options.add("Play TypeSpeeder.");
+        options.add("Show ranking list.");
+        options.add("Update player information.");
+        options.add("Check player level and points.");
+        options.add("View patch notes.");
         return options;
     }
 }

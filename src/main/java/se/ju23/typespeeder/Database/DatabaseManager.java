@@ -80,7 +80,7 @@ public class DatabaseManager {
         List<Object[]> results = query.getResultList();
         if (!results.isEmpty()) {
             Object[] result = results.get(0);
-            return (String) result[3]; // Returning displayName
+            return (String) result[3];
         }
         return null;
     }
@@ -108,7 +108,5 @@ public class DatabaseManager {
         query.setParameter(1, newDisplayName);
         query.setParameter(2, username);
         query.executeUpdate();
-
-
     }
 }

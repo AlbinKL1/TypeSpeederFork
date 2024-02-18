@@ -1,7 +1,6 @@
 package se.ju23.typespeeder;
 
 import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,7 +15,7 @@ public class PatchTest {
     @Test
     public void testPatchClassExists() {
         try {
-            Class.forName("Patch");
+            Class.forName("se.ju23.typespeeder.Patch.Patch");
         } catch (ClassNotFoundException e) {
             throw new AssertionError("Patch class should exist.", e);
         }
@@ -25,7 +24,7 @@ public class PatchTest {
     @Test
     public void testPatchProperties() {
         try {
-            Class<?> someClass = Class.forName("Patch");
+            Class<?> someClass = Class.forName("se.ju23.typespeeder.Patch.Patch");
 
             Field patchVersion = someClass.getDeclaredField("patchVersion");
             assertNotNull(patchVersion, "Field 'patchVersion' should exist in the Patch class.");

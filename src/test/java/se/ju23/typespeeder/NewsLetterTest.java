@@ -16,7 +16,7 @@ public class NewsLetterTest {
     @Test
     public void testNewsLetterClassExists() {
         try {
-            Class.forName("NewsLetter");
+            Class.forName("se.ju23.typespeeder.NewsLetter.NewsLetter");
         } catch (ClassNotFoundException e) {
             throw new AssertionError("NewsLetter class should exist.", e);
         }
@@ -24,7 +24,7 @@ public class NewsLetterTest {
     @Test
     public void testNewsLetterContentLength() {
         try {
-            Class<?> newsLetterClass = Class.forName("NewsLetter");
+            Class<?> newsLetterClass = Class.forName("se.ju23.typespeeder.NewsLetter.NewsLetter");
 
             Field contentField = newsLetterClass.getDeclaredField("content");
             assertNotNull(contentField, "Field 'content' should exist in NewsLetter.");
@@ -47,7 +47,7 @@ public class NewsLetterTest {
     @Test
     public void testNewsLetterPublishDateTime() {
         try {
-            Class<?> someClass = Class.forName("NewsLetter");
+            Class<?> someClass = Class.forName("se.ju23.typespeeder.NewsLetter.NewsLetter");
 
             Field publishDateTime = someClass.getDeclaredField("publishDateTime");
             assertNotNull(publishDateTime, "Field 'publishDateTime' should exist in NewsLetter class.");

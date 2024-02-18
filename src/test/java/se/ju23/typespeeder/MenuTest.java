@@ -24,7 +24,6 @@ public class MenuTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private LoginService loginService;
-
     private Challenge challenge;
 
     @BeforeEach
@@ -40,7 +39,7 @@ public class MenuTest {
     @Test
     public void testClassExists() {
         try {
-            Class<?> clazz = Class.forName("se.ju23.typespeeder.Menu");
+            Class<?> clazz = Class.forName("se.ju23.typespeeder.Menu.Menu");
             assertNotNull(clazz, "The class 'Menu' should exist.");
         } catch (ClassNotFoundException e) {
             fail("The class 'Menu' does not exist.", e);
@@ -50,7 +49,7 @@ public class MenuTest {
     @Test
     public void testMethodExists() {
         try {
-            Class<?> clazz = Class.forName("se.ju23.typespeeder.Menu");
+            Class<?> clazz = Class.forName("se.ju23.typespeeder.Menu.Menu");
             Method method = clazz.getMethod("displayMenu");
             assertNotNull(method, "The method 'displayMenu()' should exist in the class 'Menu'.");
         } catch (ClassNotFoundException e) {
@@ -63,7 +62,7 @@ public class MenuTest {
     @Test
     public void testMenuImplementsInterface() {
         try {
-            Class<?> menuClass = Class.forName("se.ju23.typespeeder.Menu");
+            Class<?> menuClass = Class.forName("se.ju23.typespeeder.Menu.Menu");
             boolean implementsInterface = false;
 
             Class<?>[] interfaces = menuClass.getInterfaces();
