@@ -23,9 +23,12 @@ public class Menu implements MenuService {
         this.challenge = challenge;
         this.input = new Scanner(System.in);
     }
+
     @Override
     public void loginMenu() {
+
         boolean continueLoop = true;
+        long startTime = System.nanoTime();
 
         do {
             System.out.println("""
@@ -46,6 +49,9 @@ public class Menu implements MenuService {
                     String username = login();
                     if (username != null) {
                         loggedInUsername = username;
+                        long endTime = System.nanoTime();
+                        long duration = (endTime - startTime) / 1000000;
+                        System.out.println("Login and menu loaded in " + duration + " milliseconds.");
                         displayMenu();
                     }
                 }
@@ -171,12 +177,6 @@ public class Menu implements MenuService {
     }
 
     private void viewPatchNotes() {
-    }
-
-    private void selectLanguage() {
-        System.out.println("Select Language:");
-        System.out.println("1. English");
-        System.out.println("2. Svenska");
     }
 
     @Override
