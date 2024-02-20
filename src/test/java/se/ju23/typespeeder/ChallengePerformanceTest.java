@@ -2,7 +2,7 @@ package se.ju23.typespeeder;
 
 
 import org.junit.jupiter.api.Test;
-import se.ju23.typespeeder.Challenge.Challenge;
+import se.ju23.typespeeder.Game.Challenge;
 import se.ju23.typespeeder.Database.DatabaseManager;
 
 import java.util.List;

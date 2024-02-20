@@ -3,7 +3,8 @@ package se.ju23.typespeeder.Menu;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.ju23.typespeeder.Challenge.Challenge;
+import se.ju23.typespeeder.Game.Challenge;
+import se.ju23.typespeeder.Game.Display;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +16,21 @@ public class Menu implements MenuService {
     private Scanner input;
     private final LoginService loginService;
     private final Challenge challenge;
-    private String loggedInUsername;
+    private final Display display;
+    private  static String loggedInUsername;
+    public static String getLoggedInUsername() {
+        return loggedInUsername;
+    }
+
+    public static void setLoggedInUsername(String loggedInUsername) {
+        Menu.loggedInUsername = loggedInUsername;
+    }
 
     @Autowired
-    public Menu(LoginService loginService, Challenge challenge) {
+    public Menu(LoginService loginService, Challenge challenge, Display display) {
         this.loginService = loginService;
         this.challenge = challenge;
+        this.display = display;
         this.input = new Scanner(System.in);
     }
 
@@ -126,7 +136,7 @@ public class Menu implements MenuService {
     }
 
     private void rankingList() {
-        
+        display.showRankingList();
     }
 
     private void editPlayer() {
@@ -178,6 +188,7 @@ public class Menu implements MenuService {
     }
 
     private void viewPlayerLevelAndPoints() {
+        display.viewPlayerLevelAndPoints(loggedInUsername);
     }
 
     private void viewPatchNotes() {

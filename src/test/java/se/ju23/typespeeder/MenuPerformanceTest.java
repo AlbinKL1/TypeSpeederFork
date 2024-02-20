@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import se.ju23.typespeeder.Challenge.Challenge;
+import se.ju23.typespeeder.Game.Challenge;
 import se.ju23.typespeeder.Database.DatabaseManager;
 import se.ju23.typespeeder.Menu.LoginService;
 import se.ju23.typespeeder.Menu.Menu;

@@ -1,8 +1,9 @@
-package se.ju23.typespeeder.Challenge;
+package se.ju23.typespeeder.Game;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.Database.DatabaseManager;
+import se.ju23.typespeeder.Menu.Menu;
 
 import java.util.*;
 
@@ -60,7 +61,7 @@ public class Challenge {
                 9. Words and Sentences.
                 10. Letters, Words, and Sentences.
                 11. Letters, Words, Symbols, and Sentences.
-                0. Exit program.
+                0. Back.
                 """);
 
             System.out.print("Your choice: ");
@@ -86,12 +87,9 @@ public class Challenge {
         
     }
     public void gameLogic(List<String> inputList){
-
         long startTime = System.currentTimeMillis();
-
         List<String> randomizedList = new ArrayList<>(inputList);
         Collections.shuffle(randomizedList);
-
         StringBuilder promptBuilder = new StringBuilder("Type: ");
         Random random = new Random();
         for (String item : randomizedList) {
@@ -127,7 +125,29 @@ public class Challenge {
         System.out.println("Time taken: " + elapsedTime / 1000 + " seconds");
         System.out.println("Correctly typed: " + correctCount + " out of " + Math.min(userInput.length(), randomizedList.size()));
         System.out.println("Accuracy: " + accuracy + "%");
+        int points = (int) (correctCount * accuracy / (elapsedTime / 1000));
 
+
+        int timeLimitSeconds = 60;
+        int accuracyThreshold = 50;
+        int pointsToDeduct = 0;
+
+        if (accuracy < accuracyThreshold && (elapsedTime / 1000) > timeLimitSeconds) {
+            pointsToDeduct = (int) ((accuracyThreshold - accuracy) * (elapsedTime / 1000 - timeLimitSeconds));
+            System.out.println("Accuracy below 50% and time exceeded limit. Points deducted: " + pointsToDeduct);
+        }
+
+        if (pointsToDeduct > 0) {
+            points -= pointsToDeduct;
+            if (points < 0) {
+                points = 0;
+            }
+        }
+
+        System.out.println("Points earned: " + points);
+
+        int playerId = databaseManager.getPlayerIdByUsername(Menu.getLoggedInUsername());
+        databaseManager.insertPoints(playerId, points);
     }
 
     public void lettersToType(List<String> letters) {

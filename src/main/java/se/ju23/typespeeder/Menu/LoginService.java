@@ -17,6 +17,7 @@ public class LoginService {
         String displayName = databaseManager.getPlayerByUsernameAndPassword(username, password);
         if (displayName != null) {
             System.out.println("Login successful. Welcome, " + displayName + "!");
+            Menu.setLoggedInUsername(username); // Set logged-in user using static method
             return true;
         } else {
             System.out.println("Invalid username or password. Please try again.");

@@ -109,4 +109,50 @@ public class DatabaseManager {
         query.setParameter(2, username);
         query.executeUpdate();
     }
+    public int getPlayerIdByUsername(String username) {
+        String queryStr = "SELECT id FROM player WHERE username = ?";
+        Query query = entityManager.createNativeQuery(queryStr);
+        query.setParameter(1, username);
+        return (int) query.getSingleResult();
+    }
+    public void insertPoints(int playerId, int points) {
+        String queryStr = "INSERT INTO points (playerid, points) VALUES (?, ?)";
+        Query query = entityManager.createNativeQuery(queryStr);
+        query.setParameter(1, playerId);
+        query.setParameter(2, points);
+        query.executeUpdate();
+    }
+    public void insertExperience(int playerId, int experience) {
+        String queryStr = "INSERT INTO experience (playerid, experience) VALUES (?, ?)";
+        Query query = entityManager.createNativeQuery(queryStr);
+        query.setParameter(1, playerId);
+        query.setParameter(2, experience);
+        query.executeUpdate();
+    }
+
+    public void insertPointsAndExperience(int playerId, int points) {
+        insertPoints(playerId, points);
+
+        int experience = (int) (points * 0.1);
+
+        insertExperience(playerId, experience);
+    }
+    public List<Object[]> getRankingList() {
+        String queryStr = "SELECT displayname, SUM(points) AS total_points FROM Player JOIN points ON Player.id = points.playerid GROUP BY Player.id ORDER BY total_points DESC";
+        Query query = entityManager.createNativeQuery(queryStr);
+        return query.getResultList();
+    }
+    public int getTotalPoints(int playerId) {
+        String queryStr = "SELECT SUM(points) FROM points WHERE playerid = ?";
+        Query query = entityManager.createNativeQuery(queryStr);
+        query.setParameter(1, playerId);
+        return ((Number) query.getSingleResult()).intValue();
+    }
+    public int getPlayerLevel(int playerId) {
+        String queryStr = "SELECT SUM(experience) FROM experience WHERE playerid = ?";
+        Query query = entityManager.createNativeQuery(queryStr);
+        query.setParameter(1, playerId);
+        int totalExperience = ((Number) query.getSingleResult()).intValue();
+        return totalExperience / 100; // Assuming every 100 experience points corresponds to one level
+    }
 }

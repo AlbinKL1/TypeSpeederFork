@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import se.ju23.typespeeder.Challenge.Challenge;
+import se.ju23.typespeeder.Game.Challenge;
 import se.ju23.typespeeder.Database.DatabaseManager;
 import se.ju23.typespeeder.Menu.*;
 
