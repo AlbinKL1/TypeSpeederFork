@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import se.ju23.typespeeder.Game.Challenge;
 import se.ju23.typespeeder.Database.DatabaseManager;
+import se.ju23.typespeeder.Game.Display;
 import se.ju23.typespeeder.Menu.LoginService;
 import se.ju23.typespeeder.Menu.Menu;
 
@@ -25,17 +26,19 @@ public class MenuPerformanceTest {
     private static final int MILLISECONDS_CONVERSION = 1_000_000;
     private LoginService loginService;
     private  Challenge challenge;
+    private  Display display;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         challenge = new Challenge(databaseManager);
         loginService = new LoginService(databaseManager);
+        display = new Display(databaseManager);
     }
 
     @Test
     public void testGetMenuOptionsExecutionTime() {
         long startTime = System.nanoTime();
-        Menu menu = new Menu(loginService,challenge);
+        Menu menu = new Menu(loginService,challenge,display);
         menu.getMenuOptions();
         long endTime = System.nanoTime();
 
@@ -55,7 +58,7 @@ public class MenuPerformanceTest {
         System.setOut(new PrintStream(outContent));
 
         long startTime = System.nanoTime();
-        Menu menu = new Menu(loginService, challenge);
+        Menu menu = new Menu(loginService, challenge,display);
         menu.displayMenu();
 
         long endTime = System.nanoTime();

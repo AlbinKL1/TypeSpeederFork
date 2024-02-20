@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import se.ju23.typespeeder.Game.Challenge;
 import se.ju23.typespeeder.Database.DatabaseManager;
+import se.ju23.typespeeder.Game.Display;
 import se.ju23.typespeeder.Menu.*;
 
 
@@ -28,7 +29,7 @@ public class MenuTest {
     private final PrintStream originalOut = System.out;
     private LoginService loginService;
     private Challenge challenge;
-
+    private  Display display;
     @BeforeEach
     public void setUpStreams() {
         System.setOut(new PrintStream(outContent));
@@ -38,6 +39,7 @@ public class MenuTest {
         MockitoAnnotations.openMocks(this);
         challenge = new Challenge(databaseManager);
         loginService = new LoginService(databaseManager);
+        display = new Display(databaseManager);
     }
 
 
@@ -91,21 +93,21 @@ public class MenuTest {
 
     @Test
     public void testDisplayMenuCallsGetMenuOptionsAndReturnsAtLeastFive() {
-        Menu menu = new Menu(loginService,challenge);
+        Menu menu = new Menu(loginService,challenge,display);
         menu.displayMenu();
         assertTrue(menu.getMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
     }
 
     @Test
     public void menuShouldHaveAtLeastFiveOptions() {
-        Menu menu = new Menu(loginService,challenge);
+        Menu menu = new Menu(loginService,challenge,display);
         List<String> options = menu.getMenuOptions();
         assertTrue(options.size() >= 5, "The menu should contain at least 5 alternatives.");
     }
 
     @Test
     public void menuShouldPrintAtLeastFiveOptions() {
-        new Menu(loginService,challenge).displayMenu();
+        new Menu(loginService,challenge,display).displayMenu();
         long count = outContent.toString().lines().count();
         assertTrue(count >= 5, "The menu should print out at least 5 alternatives.");
     }
@@ -119,7 +121,7 @@ public class MenuTest {
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        Menu menu = new Menu(loginService,challenge);
+        Menu menu = new Menu(loginService,challenge,display);
         menu.displayMenu();
 
         String selectedLanguage = challenge.selectLanguage();
