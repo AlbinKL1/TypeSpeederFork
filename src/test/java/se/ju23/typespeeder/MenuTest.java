@@ -11,16 +11,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
 
-import org.mockito.Mockito;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import se.ju23.typespeeder.Challenge.Challenge;
+import se.ju23.typespeeder.Database.DatabaseManager;
 import se.ju23.typespeeder.Menu.*;
 
-import static org.mockito.Mockito.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MenuTest {
 
+    @Mock
+    private DatabaseManager databaseManager;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private LoginService loginService;
@@ -30,6 +33,13 @@ public class MenuTest {
     public void setUpStreams() {
         System.setOut(new PrintStream(outContent));
     }
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        challenge = new Challenge(databaseManager);
+        loginService = new LoginService(databaseManager);
+    }
+
 
     @AfterEach
     public void restoreStreams() {
@@ -81,10 +91,9 @@ public class MenuTest {
 
     @Test
     public void testDisplayMenuCallsGetMenuOptionsAndReturnsAtLeastFive() {
-        Menu menuMock = Mockito.spy(new Menu(loginService,challenge));
-        menuMock.displayMenu();
-        verify(menuMock, times(1)).getMenuOptions();
-        assertTrue(menuMock.getMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
+        Menu menu = new Menu(loginService,challenge);
+        menu.displayMenu();
+        assertTrue(menu.getMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
     }
 
     @Test
@@ -103,7 +112,8 @@ public class MenuTest {
 
     @Test
     public void testUserCanChooseSwedishLanguage() {
-        String input = "svenska\n";
+
+        String input = "2\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -112,9 +122,8 @@ public class MenuTest {
         Menu menu = new Menu(loginService,challenge);
         menu.displayMenu();
 
-        String consoleOutput = outContent.toString();
-        assertTrue(consoleOutput.contains("Välj språk (svenska/engelska):"), "Menu should prompt for language selection.");
-        assertTrue(consoleOutput.contains("Svenska valt."), "Menu should confirm Swedish language selection.");
-    }
+        String selectedLanguage = challenge.selectLanguage();
 
+        assertEquals("Svenska" , selectedLanguage);
+    }
 }

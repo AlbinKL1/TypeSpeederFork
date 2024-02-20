@@ -52,7 +52,8 @@ public class Menu implements MenuService {
                         long endTime = System.nanoTime();
                         long duration = (endTime - startTime) / 1000000;
                         System.out.println("Login and menu loaded in " + duration + " milliseconds.");
-                        displayMenu();
+                        displayMenu(
+                        );
                     }
                 }
                 case 2 -> createAccount();
@@ -106,8 +107,11 @@ public class Menu implements MenuService {
                 """);
 
             System.out.print("Your choice: ");
-            int choice = input.nextInt();
-            input.nextLine();
+            int choice = 0;
+            if(input.hasNextInt())
+            {
+                choice = input.nextInt();
+            }
 
             switch (choice) {
                 case 1 -> challenge.startChallenge();
