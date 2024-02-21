@@ -29,9 +29,9 @@ public class Challenge {
     }
 
     public String selectLanguage() {
-        System.out.println("Select Language: ");
-        System.out.println("1. English.");
-        System.out.println("2. Svenska.");
+        System.out.println("\nSelect Language: ");
+        System.out.println("1. Play in English.");
+        System.out.println("2. Spela i Svenska.");
         System.out.print("Your choice: ");
         int choice = 0;
         if(input.hasNextInt())
@@ -65,8 +65,11 @@ public class Challenge {
                 """);
 
             System.out.print("Your choice: ");
-            int choice = input.nextInt();
-            input.nextLine();
+            int choice = 0;
+            if(input.hasNextInt())
+            {
+                choice = input.nextInt();
+            }
 
             switch (choice) {
                 case 1 -> lettersToType(letters);
@@ -122,7 +125,7 @@ public class Challenge {
 
         double accuracy = (double) correctCount / Math.min(userInput.length(), randomizedList.size()) * 100;
 
-        System.out.println("Time taken: " + elapsedTime / 1000 + " seconds");
+        System.out.println("\nTime taken: " + elapsedTime / 1000 + " seconds");
         System.out.println("Correctly typed: " + correctCount + " out of " + Math.min(userInput.length(), randomizedList.size()));
         System.out.println("Accuracy: " + accuracy + "%");
         int points = (int) (correctCount * accuracy / (elapsedTime / 1000));
@@ -143,11 +146,13 @@ public class Challenge {
                 points = 0;
             }
         }
+        int experience = (int) (points * 0.1);
 
-        System.out.println("Points earned: " + points);
+        System.out.println("\nPoints earned: " + points);
+        System.out.println("Experience earned: " + experience);
 
         int playerId = databaseManager.getPlayerIdByUsername(Menu.getLoggedInUsername());
-        databaseManager.insertPoints(playerId, points);
+        databaseManager.insertPointsAndExperience(playerId, points);
     }
 
     public void lettersToType(List<String> letters) {

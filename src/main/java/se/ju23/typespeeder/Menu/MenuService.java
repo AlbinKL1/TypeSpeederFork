@@ -7,4 +7,6 @@ public interface MenuService {
     void loginMenu();
     void displayMenu();
     List<String> getMenuOptions();
+    List<String> getEnglishMenuOptions();
+    List<String> getSwedishMenuOptions();
 }

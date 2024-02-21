@@ -16,7 +16,7 @@ public class Display {
 
     public void showRankingList() {
         List<Object[]> rankingList = databaseManager.getRankingList();
-        System.out.println("Ranking List:");
+        System.out.println("\nRanking List\n");
         for (int i = 0; i < rankingList.size(); i++) {
             Object[] playerInfo = rankingList.get(i);
             String playerName = (String) playerInfo[0];

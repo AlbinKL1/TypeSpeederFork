@@ -22,7 +22,6 @@ import se.ju23.typespeeder.Menu.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MenuTest {
-
     @Mock
     private DatabaseManager databaseManager;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -35,10 +34,11 @@ public class MenuTest {
         System.setOut(new PrintStream(outContent));
     }
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        challenge = new Challenge(databaseManager);
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+
         loginService = new LoginService(databaseManager);
+        challenge = new Challenge(databaseManager);
         display = new Display(databaseManager);
     }
 

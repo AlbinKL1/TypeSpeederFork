@@ -16,7 +16,7 @@ public class LoginService {
     public boolean login(String username, String password) {
         String displayName = databaseManager.getPlayerByUsernameAndPassword(username, password);
         if (displayName != null) {
-            System.out.println("Login successful. Welcome, " + displayName + "!");
+            System.out.println("\nLogin successful. Welcome, " + displayName + "!");
             Menu.setLoggedInUsername(username); // Set logged-in user using static method
             return true;
         } else {

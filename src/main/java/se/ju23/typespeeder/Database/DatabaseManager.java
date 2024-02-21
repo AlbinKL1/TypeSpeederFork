@@ -5,7 +5,9 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.ju23.typespeeder.Patch.Patch;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -153,6 +155,18 @@ public class DatabaseManager {
         Query query = entityManager.createNativeQuery(queryStr);
         query.setParameter(1, playerId);
         int totalExperience = ((Number) query.getSingleResult()).intValue();
-        return totalExperience / 100; // Assuming every 100 experience points corresponds to one level
+        return totalExperience / 100;
+    }
+    public void createPatchNote(String patchVersion, LocalDateTime releaseDateTime, String notes) {
+        Patch patch = new Patch();
+        patch.setPatchversion(patchVersion);
+        patch.setReleasedatetime(releaseDateTime);
+        patch.setNotes(notes);
+        entityManager.persist(patch);
+    }
+
+    public List<Patch> getAllPatchNotes() {
+        Query query = entityManager.createQuery("SELECT p FROM Patch p");
+        return query.getResultList();
     }
 }
