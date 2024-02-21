@@ -139,11 +139,12 @@ public class Menu implements MenuService {
         }
 
         do {
-            System.out.println("Player menu\n");
+            System.out.println("\nPlayer menu\n");
 
             for (int i = 0; i < options.size(); i++) {
                 System.out.println((i + 1) + ". " + options.get(i));
             }
+            System.out.println("0. Logout.");
 
             System.out.print("Your choice: ");
             int choice = 0;
@@ -174,7 +175,6 @@ public class Menu implements MenuService {
         options.add("Check player level and points.");
         options.add("Write patch notes.");
         options.add("View patch notes.");
-        options.add("Logout.");
         return options;
     }
 
@@ -187,7 +187,6 @@ public class Menu implements MenuService {
         options.add("Kolla spelarnivå och poäng.");
         options.add("Skriv patchanteckningar.");
         options.add("Visa patchanteckningar.");
-        options.add("Logga ut.");
         return options;
     }
 
@@ -277,17 +276,5 @@ public class Menu implements MenuService {
                 System.out.println();
             }
         }
-    }
-
-
-    @Override
-    public List<String> getMenuOptions() {
-        List<String> options = new ArrayList<>();
-        options.add("Play TypeSpeeder.");
-        options.add("Show ranking list.");
-        options.add("Update player information.");
-        options.add("Check player level and points.");
-        options.add("View patch notes.");
-        return options;
     }
 }

@@ -37,10 +37,21 @@ public class MenuPerformanceTest {
         display = new Display(databaseManager);
     }
     @Test
-    public void testGetMenuOptionsExecutionTime() {
+    public void testGetSwedishMenuOptionsExecutionTime() {
         long startTime = System.nanoTime();
         Menu menu = new Menu(loginService,challenge,display);
-        menu.getMenuOptions();
+        menu.getSwedishMenuOptions();
+        long endTime = System.nanoTime();
+
+        long duration = (endTime - startTime) / MILLISECONDS_CONVERSION;
+
+        assertTrue(duration <= MAX_EXECUTION_TIME_MENU, "Menu display took too long. Execution time: " + duration + " ms.");
+    }
+    @Test
+    public void testGetEnglishMenuOptionsExecutionTime() {
+        long startTime = System.nanoTime();
+        Menu menu = new Menu(loginService,challenge,display);
+        menu.getEnglishMenuOptions();
         long endTime = System.nanoTime();
 
         long duration = (endTime - startTime) / MILLISECONDS_CONVERSION;

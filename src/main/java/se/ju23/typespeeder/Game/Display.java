@@ -3,6 +3,7 @@ package se.ju23.typespeeder.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.Database.DatabaseManager;
+import se.ju23.typespeeder.Menu.Menu;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class Display {
         int playerId = databaseManager.getPlayerIdByUsername(loggedInUsername);
         int playerLevel = databaseManager.getPlayerLevel(playerId);
         int totalPoints = databaseManager.getTotalPoints(playerId);
+        System.out.println("\nPlayer: " + databaseManager.getPlayerDisplayName(Menu.getLoggedInUsername()));
         System.out.println("Player Level: " + playerLevel);
         System.out.println("Total Points: " + totalPoints);
     }

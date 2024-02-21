@@ -117,6 +117,14 @@ public class DatabaseManager {
         query.setParameter(1, username);
         return (int) query.getSingleResult();
     }
+
+    public String getPlayerDisplayName(String username) {
+        String queryStr = "SELECT displayname FROM Player WHERE username = ?";
+        Query query = entityManager.createNativeQuery(queryStr);
+        query.setParameter(1, username);
+        List<String> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
+    }
     public void insertPoints(int playerId, int points) {
         String queryStr = "INSERT INTO points (playerid, points) VALUES (?, ?)";
         Query query = entityManager.createNativeQuery(queryStr);

@@ -7,8 +7,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import se.ju23.typespeeder.Game.Challenge;
 import se.ju23.typespeeder.Database.DatabaseManager;
-import se.ju23.typespeeder.Game.Display;
-import se.ju23.typespeeder.Menu.LoginService;
 
 import java.util.Arrays;
 import java.util.List;

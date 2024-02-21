@@ -90,18 +90,30 @@ public class MenuTest {
             fail("The class 'Menu' could not be found", e);
         }
     }
-
     @Test
-    public void testDisplayMenuCallsGetMenuOptionsAndReturnsAtLeastFive() {
+    public void testDisplayMenuCallsgetEnglishMenuOptionsAndReturnsAtLeastFive() {
         Menu menu = new Menu(loginService,challenge,display);
         menu.displayMenu();
-        assertTrue(menu.getMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
+        assertTrue(menu.getEnglishMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
     }
 
     @Test
-    public void menuShouldHaveAtLeastFiveOptions() {
+    public void testDisplayMenuCallsGetSwedishMenuOptionsAndReturnsAtLeastFive() {
         Menu menu = new Menu(loginService,challenge,display);
-        List<String> options = menu.getMenuOptions();
+        menu.displayMenu();
+        assertTrue(menu.getSwedishMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
+    }
+
+    @Test
+    public void swedishMenuShouldHaveAtLeastFiveOptions() {
+        Menu menu = new Menu(loginService,challenge,display);
+        List<String> options = menu.getSwedishMenuOptions();
+        assertTrue(options.size() >= 5, "The menu should contain at least 5 alternatives.");
+    }
+    @Test
+    public void englishMenuShouldHaveAtLeastFiveOptions() {
+        Menu menu = new Menu(loginService,challenge,display);
+        List<String> options = menu.getEnglishMenuOptions();
         assertTrue(options.size() >= 5, "The menu should contain at least 5 alternatives.");
     }
 
@@ -114,7 +126,6 @@ public class MenuTest {
 
     @Test
     public void testUserCanChooseSwedishLanguage() {
-
         String input = "2\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
