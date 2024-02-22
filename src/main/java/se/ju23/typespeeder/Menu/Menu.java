@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import se.ju23.typespeeder.Database.DatabaseManager;
 import se.ju23.typespeeder.Game.Challenge;
 import se.ju23.typespeeder.Game.Display;
+import se.ju23.typespeeder.NewsLetter.Newsletter;
 import se.ju23.typespeeder.Patch.Patch;
 
 import java.time.LocalDateTime;
@@ -160,6 +161,8 @@ public class Menu implements MenuService {
                 case 4 -> viewPlayerLevelAndPoints();
                 case 5 -> writePatchNotes();
                 case 6 -> viewPatchNotes();
+                case 7 -> writeNewsLetter();
+                case 8 -> viewNewsLetter();
                 case 0 -> continueLoop = false;
                 default -> System.out.println("Invalid choice. Please try again.");
             }
@@ -175,6 +178,8 @@ public class Menu implements MenuService {
         options.add("Check player level and points.");
         options.add("Write patch notes.");
         options.add("View patch notes.");
+        options.add("Write a newsletter");
+        options.add("View newsletters");
         return options;
     }
 
@@ -187,6 +192,8 @@ public class Menu implements MenuService {
         options.add("Kolla spelarnivå och poäng.");
         options.add("Skriv patchanteckningar.");
         options.add("Visa patchanteckningar.");
+        options.add("Skriv nyhetsbrev");
+        options.add("Visa nyhetsbrev");
         return options;
     }
 
@@ -273,6 +280,32 @@ public class Menu implements MenuService {
                 System.out.println("Version: " + patchNote.getPatchversion());
                 System.out.println("Release Date: " + patchNote.getReleasedatetime());
                 System.out.println("Notes: " + patchNote.getNotes());
+                System.out.println();
+            }
+        }
+    }
+    public void writeNewsLetter(){
+        input.nextLine();
+
+        LocalDateTime publishDateTime = LocalDateTime.now();
+        System.out.println("Current date and time: " + publishDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        System.out.print("Enter newsletter content: ");
+        String content = input.nextLine();
+
+        databaseManager.createNewsLetter(publishDateTime, content);
+        System.out.println("Patch notes created successfully.");
+
+    }
+    public void viewNewsLetter(){
+        List<Newsletter> newsLetters = databaseManager.getAllNewsletters();
+        if (newsLetters.isEmpty()) {
+            System.out.println("\nNo newsletter available.");
+        } else {
+            System.out.println("\nNewsletters\n");
+            for (Newsletter newsLetter : newsLetters) {
+                System.out.println("Publish Date: " + newsLetter.getPublishdatetime());
+                System.out.println("Content: " + newsLetter.getContent());
                 System.out.println();
             }
         }

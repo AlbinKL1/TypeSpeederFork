@@ -22,10 +22,6 @@ public class Patch {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getPatchversion() {
         return patchversion;
     }

@@ -5,6 +5,7 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.ju23.typespeeder.NewsLetter.Newsletter;
 import se.ju23.typespeeder.Patch.Patch;
 
 import java.time.LocalDateTime;
@@ -175,6 +176,18 @@ public class DatabaseManager {
 
     public List<Patch> getAllPatchNotes() {
         Query query = entityManager.createQuery("SELECT p FROM Patch p");
+        return query.getResultList();
+    }
+
+    public void createNewsLetter(LocalDateTime publishDateTime, String content) {
+        Newsletter newsLetter = new Newsletter();
+        newsLetter.setPublishdatetime(publishDateTime);
+        newsLetter.setContent(content != null ? content : "");
+        entityManager.persist(newsLetter);
+    }
+
+    public List<Newsletter> getAllNewsletters() {
+        Query query = entityManager.createQuery("SELECT n FROM Newsletter n");
         return query.getResultList();
     }
 }
