@@ -1,4 +1,4 @@
-package se.ju23.typespeeder.Patch;
+package se.ju23.typespeeder.Entitys;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,27 +17,29 @@ public class Patch {
     public LocalDateTime releasedatetime;
     public String notes;
 
-    // Getters and setters
+    //Constructor
+    public Patch() {
+        this.releasedatetime = LocalDateTime.now();
+    }
+
+    // Getters
     public Long getId() {
         return id;
     }
-
     public String getPatchversion() {
         return patchversion;
     }
-
     public void setPatchversion(String patchVersion) {
         this.patchversion = patchVersion;
     }
-
     public LocalDateTime getReleasedatetime() {
         return releasedatetime;
     }
 
+    //Setters
     public void setReleasedatetime(LocalDateTime releaseDateTime) {
         this.releasedatetime = releaseDateTime;
     }
-
     public String getNotes() {
         return notes;
     }

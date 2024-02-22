@@ -3,45 +3,29 @@ package se.ju23.typespeeder.Menu;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.ju23.typespeeder.Database.DatabaseManager;
-import se.ju23.typespeeder.Game.Challenge;
-import se.ju23.typespeeder.Game.Display;
-import se.ju23.typespeeder.NewsLetter.Newsletter;
-import se.ju23.typespeeder.Patch.Patch;
+import se.ju23.typespeeder.DatabaseAndUtility.EntityManager;
+import se.ju23.typespeeder.DatabaseAndUtility.UtilityService;
+import se.ju23.typespeeder.Game.ChallengeService;
+import se.ju23.typespeeder.Game.DisplayService;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 @Component
 public class Menu implements MenuService {
 
-
-    @Autowired
-    private DatabaseManager databaseManager;
-    private Scanner input;
     private final LoginService loginService;
-    private final Challenge challenge;
-    private final Display display;
-    private  static String loggedInUsername;
-    public static String getLoggedInUsername() {
-        return loggedInUsername;
-    }
-
-    public static void setLoggedInUsername(String loggedInUsername) {
-        Menu.loggedInUsername = loggedInUsername;
-    }
+    private final ChallengeService challenge;
+    private final DisplayService display;
 
     @Autowired
-    public Menu(LoginService loginService, Challenge challenge, Display display) {
+    public Menu(LoginService loginService, ChallengeService challenge, DisplayService display) {
         this.loginService = loginService;
         this.challenge = challenge;
         this.display = display;
-        this.input = new Scanner(System.in);
     }
 
+    //Login menu.
     @Override
     public void loginMenu() {
 
@@ -59,17 +43,13 @@ public class Menu implements MenuService {
                     """);
 
             System.out.print("Your choice: ");
-            int choice = 0;
-            if(input.hasNextInt())
-            {
-                choice = input.nextInt();
-            }
+            int choice = UtilityService.getIntInput();
 
             switch (choice) {
                 case 1 -> {
                     String username = login();
                     if (username != null) {
-                        loggedInUsername = username;
+                        UtilityService.loggedInUsername = username;
                         long endTime = System.nanoTime();
                         long duration = (endTime - startTime) / 1000000;
                         System.out.println("Login and menu loaded in " + duration + " milliseconds.");
@@ -83,13 +63,12 @@ public class Menu implements MenuService {
             }
         } while (continueLoop);
     }
-
     private String login() {
-        input.nextLine();
+        UtilityService.input.nextLine();
         System.out.print("Enter username: ");
-        String username = input.nextLine();
+        String username = UtilityService.input.nextLine();
         System.out.print("Enter password: ");
-        String password = input.nextLine();
+        String password = UtilityService.input.nextLine();
         if (loginService.login(username, password)) {
             return username;
         } else {
@@ -98,17 +77,13 @@ public class Menu implements MenuService {
         }
     }
 
+    //Create account menu.
     private void createAccount() {
-        System.out.print("Enter username: ");
-        String username = input.nextLine();
-        System.out.print("Enter password: ");
-        String password = input.nextLine();
-        System.out.print("Enter display name: ");
-        String displayName = input.nextLine();
-        loginService.createAccount(username, password, displayName);
+        loginService.createAccount();
         loginMenu();
     }
 
+    //Main menu.
     @Override
     public void displayMenu() {
         boolean continueLoop = true;
@@ -116,12 +91,9 @@ public class Menu implements MenuService {
         System.out.println("\nSelect language:");
         System.out.println("1. English");
         System.out.println("2. Svenska");
+
         System.out.print("Your choice: ");
-        int languageChoice = 0;
-        if(input.hasNextInt())
-        {
-            languageChoice = input.nextInt();
-        }
+        int languageChoice = UtilityService.getIntInput();
 
         List<String> options;
         switch (languageChoice) {
@@ -148,11 +120,7 @@ public class Menu implements MenuService {
             System.out.println("0. Logout.");
 
             System.out.print("Your choice: ");
-            int choice = 0;
-            if(input.hasNextInt())
-            {
-                choice = input.nextInt();
-            }
+            int choice = UtilityService.getIntInput();
 
             switch (choice) {
                 case 1 -> challenge.startChallenge();
@@ -168,7 +136,6 @@ public class Menu implements MenuService {
             }
         } while (continueLoop);
     }
-
     @Override
     public List<String> getEnglishMenuOptions() {
         List<String> options = new ArrayList<>();
@@ -182,7 +149,6 @@ public class Menu implements MenuService {
         options.add("View newsletters");
         return options;
     }
-
     @Override
     public List<String> getSwedishMenuOptions() {
         List<String> options = new ArrayList<>();
@@ -197,10 +163,12 @@ public class Menu implements MenuService {
         return options;
     }
 
+    //RankingList.
     private void rankingList() {
         display.showRankingList();
     }
 
+    //Edit player menu and methods..
     private void editPlayer() {
 
         boolean continueLoop = true;
@@ -217,8 +185,7 @@ public class Menu implements MenuService {
                 """);
 
             System.out.print("Your choice: ");
-            int choice = input.nextInt();
-            input.nextLine();
+            int choice = UtilityService.getIntInput();
 
             switch (choice) {
                 case 1 -> editUsername();
@@ -230,84 +197,35 @@ public class Menu implements MenuService {
         }while(continueLoop);
 
     }
-
     private void editUsername() {
-        System.out.print("Enter new username: ");
-        String newUsername = input.nextLine();
-        loginService.editUsername(loggedInUsername, newUsername);
+        loginService.editUsername(UtilityService.loggedInUsername);
     }
-
     private void editPassword() {
-        System.out.print("Enter new password: ");
-        String newPassword = input.nextLine();
-        loginService.editPassword(loggedInUsername, newPassword);
+        loginService.editPassword(UtilityService.loggedInUsername);
     }
-
     private void editDisplayName() {
-        System.out.print("Enter new display name: ");
-        String newDisplayName = input.nextLine();
-        loginService.editDisplayName(loggedInUsername, newDisplayName);
+        loginService.editDisplayName(UtilityService.loggedInUsername);
     }
 
+    //Points and levels.
     private void viewPlayerLevelAndPoints() {
-        display.viewPlayerLevelAndPoints(loggedInUsername);
+        display.viewPlayerLevelAndPoints(UtilityService.loggedInUsername);
     }
 
+    //Patch note creation and viewing.
     public void writePatchNotes() {
-        input.nextLine();
-
-        System.out.print("\nEnter patch version (0.0.0): ");
-        String patchVersion = input.nextLine();
-
-        System.out.print("Enter patch notes: ");
-        String notes = input.nextLine();
-
-        LocalDateTime releaseDateTime = LocalDateTime.now();
-        System.out.println("Current date and time: " + releaseDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
-        databaseManager.createPatchNote(patchVersion, releaseDateTime, notes);
-        System.out.println("Patch notes created successfully.");
-
+        display.writePatchNotes();
     }
-
     public void viewPatchNotes() {
-        List<Patch> patchNotes = databaseManager.getAllPatchNotes();
-        if (patchNotes.isEmpty()) {
-            System.out.println("\nNo patch notes available.");
-        } else {
-            System.out.println("\nPatch Notes\n");
-            for (Patch patchNote : patchNotes) {
-                System.out.println("Version: " + patchNote.getPatchversion());
-                System.out.println("Release Date: " + patchNote.getReleasedatetime());
-                System.out.println("Notes: " + patchNote.getNotes());
-                System.out.println();
-            }
-        }
+        display.viewPatchNotes();
     }
+
+    //Newsletter creation and viewing.
     public void writeNewsLetter(){
-        input.nextLine();
-
-        LocalDateTime publishDateTime = LocalDateTime.now();
-        System.out.println("Current date and time: " + publishDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
-        System.out.print("Enter newsletter content: ");
-        String content = input.nextLine();
-
-        databaseManager.createNewsLetter(publishDateTime, content);
-        System.out.println("Patch notes created successfully.");
+        display.writeNewsLetter();
 
     }
     public void viewNewsLetter(){
-        List<Newsletter> newsLetters = databaseManager.getAllNewsletters();
-        if (newsLetters.isEmpty()) {
-            System.out.println("\nNo newsletter available.");
-        } else {
-            System.out.println("\nNewsletters\n");
-            for (Newsletter newsLetter : newsLetters) {
-                System.out.println("Publish Date: " + newsLetter.getPublishdatetime());
-                System.out.println("Content: " + newsLetter.getContent());
-                System.out.println();
-            }
-        }
+       display.viewNewsLetter();
     }
 }

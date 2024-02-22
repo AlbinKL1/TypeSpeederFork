@@ -5,8 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import se.ju23.typespeeder.Game.Challenge;
-import se.ju23.typespeeder.Database.DatabaseManager;
+import se.ju23.typespeeder.Game.ChallengeService;
+import se.ju23.typespeeder.DatabaseAndUtility.EntityManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,14 +16,14 @@ import static org.mockito.Mockito.when;
 
 public class ChallengePerformanceTest {
     @Mock
-    private DatabaseManager databaseManager;
-    private Challenge challenge;
+    private EntityManager databaseManager;
+    private ChallengeService challenge;
     private static final int MAX_EXECUTION_TIME = 200;
     private static final int MILLISECONDS_CONVERSION = 1_000_000;
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-         challenge = new Challenge(databaseManager);
+         challenge = new ChallengeService(databaseManager);
     }
     @Test
     public void testStartChallengePerformance() {

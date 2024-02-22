@@ -13,9 +13,9 @@ import java.util.List;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import se.ju23.typespeeder.Game.Challenge;
-import se.ju23.typespeeder.Database.DatabaseManager;
-import se.ju23.typespeeder.Game.Display;
+import se.ju23.typespeeder.Game.ChallengeService;
+import se.ju23.typespeeder.DatabaseAndUtility.EntityManager;
+import se.ju23.typespeeder.Game.DisplayService;
 import se.ju23.typespeeder.Menu.*;
 
 
@@ -23,12 +23,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MenuTest {
     @Mock
-    private DatabaseManager databaseManager;
+    private EntityManager databaseManager;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private LoginService loginService;
-    private Challenge challenge;
-    private  Display display;
+    private ChallengeService challenge;
+    private DisplayService display;
     @BeforeEach
     public void setUpStreams() {
         System.setOut(new PrintStream(outContent));
@@ -38,8 +38,8 @@ public class MenuTest {
         MockitoAnnotations.initMocks(this);
 
         loginService = new LoginService(databaseManager);
-        challenge = new Challenge(databaseManager);
-        display = new Display(databaseManager);
+        challenge = new ChallengeService(databaseManager);
+        display = new DisplayService(databaseManager);
     }
 
 

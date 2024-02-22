@@ -1,24 +1,23 @@
 package se.ju23.typespeeder.Game;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import se.ju23.typespeeder.Database.DatabaseManager;
-import se.ju23.typespeeder.Menu.Menu;
+import org.springframework.stereotype.Service;
+import se.ju23.typespeeder.DatabaseAndUtility.EntityManager;
+import se.ju23.typespeeder.DatabaseAndUtility.UtilityService;
 
 import java.util.*;
 
-@Component
-public class Challenge {
+@Service
+public class ChallengeService {
 
-    private final DatabaseManager databaseManager;
-    private final Scanner input;
+    private final EntityManager databaseManager;
 
     @Autowired
-    public Challenge(DatabaseManager databaseManager) {
+    public ChallengeService(EntityManager databaseManager) {
         this.databaseManager = databaseManager;
-        this.input = new Scanner(System.in);
     }
 
+    //Method to get all the different letters, words, symbols and sentences.
     public void startChallenge() {
         String language = selectLanguage();
         List<String> letters = (language.equals("English")) ? databaseManager.getEnglishLetters() : databaseManager.getSwedishLetters();
@@ -28,19 +27,19 @@ public class Challenge {
         selectLevel(letters,symbols,words,sentences);
     }
 
+    //Selecting what type of language to play in.
     public String selectLanguage() {
         System.out.println("\nSelect Language: ");
         System.out.println("1. Play in English.");
         System.out.println("2. Spela i Svenska.");
+
         System.out.print("Your choice: ");
-        int choice = 0;
-        if(input.hasNextInt())
-        {
-            choice = input.nextInt();
-        }
+        int choice = UtilityService.getIntInput();
+
         return (choice == 1) ? "English" : "Svenska";
     }
 
+    //Level selection.
     private void selectLevel(List<String> letters, List<String> symbols, List<String> words, List<String> sentences) {
         
         boolean continueLoop = true;
@@ -65,11 +64,7 @@ public class Challenge {
                 """);
 
             System.out.print("Your choice: ");
-            int choice = 0;
-            if(input.hasNextInt())
-            {
-                choice = input.nextInt();
-            }
+            int choice = UtilityService.getIntInput();
 
             switch (choice) {
                 case 1 -> lettersToType(letters);
@@ -89,6 +84,8 @@ public class Challenge {
         }while(continueLoop);
         
     }
+
+    //All the game logic.
     public void gameLogic(List<String> inputList){
         long startTime = System.currentTimeMillis();
         List<String> randomizedList = new ArrayList<>(inputList);
@@ -151,25 +148,23 @@ public class Challenge {
         System.out.println("\nPoints earned: " + points);
         System.out.println("Experience earned: " + experience);
 
-        int playerId = databaseManager.getPlayerIdByUsername(Menu.getLoggedInUsername());
+        int playerId = databaseManager.getPlayerIdByUsername(UtilityService.getLoggedInUsername());
         databaseManager.insertPointsAndExperience(playerId, points);
     }
 
+    //Game methods to play typespeeder.
     public void lettersToType(List<String> letters) {
         System.out.println("Playing Letters.");
         gameLogic(letters);
     }
-
     public void wordsToType(List<String> words) {
         System.out.println("Playing Words.");
         gameLogic(words);
     }
-
     public void sentencesToType(List<String> sentences) {
         System.out.println("Playing Sentences.");
         gameLogic(sentences);
     }
-
     public void lettersAndSymbolsToType(List<String> letters, List<String> symbols) {
         System.out.println("Playing Letters and Symbols.");
         List<String> lettersAndSymbols = new ArrayList<>();
@@ -177,7 +172,6 @@ public class Challenge {
         lettersAndSymbols.addAll(symbols);
         gameLogic(lettersAndSymbols);
     }
-
     public void wordsAndSymbolsToType(List<String> words, List<String> symbols) {
         System.out.println("Playing Words and Symbols.");
         List<String> wordsAndSymbols = new ArrayList<>();
@@ -185,7 +179,6 @@ public class Challenge {
         wordsAndSymbols.addAll(symbols);
         gameLogic(wordsAndSymbols);
     }
-
     public void sentencesAndSymbolsToType(List<String> sentences, List<String> symbols) {
         System.out.println("Playing Sentences and Symbols.");
         List<String> sentencesAndSymbols = new ArrayList<>();
@@ -193,7 +186,6 @@ public class Challenge {
         sentencesAndSymbols.addAll(symbols);
         gameLogic(sentencesAndSymbols);
     }
-
     public void lettersAndWordsToType(List<String> letters, List<String> words) {
         System.out.println("Playing Letters and Words .");
         List<String> lettersAndWords = new ArrayList<>();
@@ -201,7 +193,6 @@ public class Challenge {
         lettersAndWords.addAll(words);
         gameLogic(lettersAndWords);
     }
-
     public void lettersAndSentencesToType(List<String> letters, List<String> sentences) {
         System.out.println("Playing Letters and Sentences.");
         List<String> lettersAndSentences = new ArrayList<>();
@@ -209,7 +200,6 @@ public class Challenge {
         lettersAndSentences.addAll(sentences);
         gameLogic(lettersAndSentences);
     }
-
     public void wordsAndSentencesToType(List<String> words, List<String> sentences) {
         System.out.println("Playing Words and Sentences.");
         List<String> wordsAndSentences = new ArrayList<>();
@@ -217,7 +207,6 @@ public class Challenge {
         wordsAndSentences.addAll(sentences);
         gameLogic(wordsAndSentences);
     }
-
     public void lettersWordsAndSentencesToType(List<String> letters, List<String> words, List<String> sentences) {
         System.out.println("Playing Letters,Words and Sentences.");
         List<String> lettersWordsAndSentences = new ArrayList<>();
@@ -226,7 +215,6 @@ public class Challenge {
         lettersWordsAndSentences.addAll(sentences);
         gameLogic(lettersWordsAndSentences);
     }
-
     public void lettersWordsSymbolsAndSentencesToType(List<String> letters, List<String> words, List<String> symbols, List<String> sentences) {
         System.out.println("Playing Letters,Words,Symbols and Sentences.");
         List<String> lettersWordsSymbolsAndSentences = new ArrayList<>();

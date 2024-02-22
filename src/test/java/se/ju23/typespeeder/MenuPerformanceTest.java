@@ -4,9 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import se.ju23.typespeeder.Game.Challenge;
-import se.ju23.typespeeder.Database.DatabaseManager;
-import se.ju23.typespeeder.Game.Display;
+import se.ju23.typespeeder.Game.ChallengeService;
+import se.ju23.typespeeder.DatabaseAndUtility.EntityManager;
+import se.ju23.typespeeder.Game.DisplayService;
 import se.ju23.typespeeder.Menu.LoginService;
 import se.ju23.typespeeder.Menu.Menu;
 
@@ -20,21 +20,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MenuPerformanceTest {
     @Mock
-    private DatabaseManager databaseManager;
+    private EntityManager databaseManager;
     private static final int MAX_EXECUTION_TIME_MENU = 1;
     private static final int MAX_EXECUTION_TIME_LANGUAGE_SELECTION = 100;
     private static final int MILLISECONDS_CONVERSION = 1_000_000;
     private LoginService loginService;
-    private  Challenge challenge;
-    private  Display display;
+    private ChallengeService challenge;
+    private DisplayService display;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         loginService = new LoginService(databaseManager);
-        challenge = new Challenge(databaseManager);
-        display = new Display(databaseManager);
+        challenge = new ChallengeService(databaseManager);
+        display = new DisplayService(databaseManager);
     }
     @Test
     public void testGetSwedishMenuOptionsExecutionTime() {
