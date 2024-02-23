@@ -51,7 +51,7 @@ public class NewsLetterTest {
         try {
             Class<?> someClass = Class.forName("se.ju23.typespeeder.Entitys.Newsletter");
 
-            Field publishDateTime = someClass.getDeclaredField("publishdatetime");
+            Field publishDateTime = someClass.getDeclaredField("publishDateTime");
             assertNotNull(publishDateTime, "Field 'publishdatetime' should exist in NewsLetter class.");
 
             assertTrue(publishDateTime.getType().equals(LocalDateTime.class), "Field 'publishdatetime' should be of type LocalDateTime.");
@@ -67,7 +67,7 @@ public class NewsLetterTest {
             String formattedDateTime = dateTimeValue.format(formatter);
             assertEquals(publishDateTimeValue.format(formatter), formattedDateTime, "'publishdatetime' field should have format 'yyyy-MM-dd HH:mm:ss'.");
 
-            Method getterMethod = someClass.getDeclaredMethod("getPublishdatetime");
+            Method getterMethod = someClass.getDeclaredMethod("getPublishDateTime");
             assertNotNull(getterMethod, "Getter method for the field 'publishDateTime' should exist.");
 
 

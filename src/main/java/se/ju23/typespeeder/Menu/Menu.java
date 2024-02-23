@@ -3,8 +3,9 @@ package se.ju23.typespeeder.Menu;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.ju23.typespeeder.DatabaseAndUtility.EntityManager;
 import se.ju23.typespeeder.DatabaseAndUtility.UtilityService;
+import se.ju23.typespeeder.Entitys.Player;
+import se.ju23.typespeeder.Entitys.PlayerRepo;
 import se.ju23.typespeeder.Game.ChallengeService;
 import se.ju23.typespeeder.Game.DisplayService;
 
@@ -17,12 +18,14 @@ public class Menu implements MenuService {
     private final LoginService loginService;
     private final ChallengeService challenge;
     private final DisplayService display;
+    private PlayerRepo playerRepo;
 
     @Autowired
-    public Menu(LoginService loginService, ChallengeService challenge, DisplayService display) {
+    public Menu(LoginService loginService, ChallengeService challenge, DisplayService display,PlayerRepo playerRepo) {
         this.loginService = loginService;
         this.challenge = challenge;
         this.display = display;
+        this.playerRepo = playerRepo;
     }
 
     //Login menu.
@@ -110,6 +113,14 @@ public class Menu implements MenuService {
                 options = getEnglishMenuOptions();
             }
         }
+        String currentPlayerUsername = UtilityService.getLoggedInUsername();
+        Player player = playerRepo.findByUsername(currentPlayerUsername);
+        if (player != null && player.getPlayerType() == 1) {
+            options.remove("Write patch notes.");
+            options.remove("Write a newsletter.");
+            options.remove("Skriv patchanteckningar.");
+            options.remove("Skriv nyhetsbrev");
+        }
 
         do {
             System.out.println("\nPlayer menu\n");
@@ -122,19 +133,32 @@ public class Menu implements MenuService {
             System.out.print("Your choice: ");
             int choice = UtilityService.getIntInput();
 
-            switch (choice) {
-                case 1 -> challenge.startChallenge();
-                case 2 -> rankingList();
-                case 3 -> editPlayer();
-                case 4 -> viewPlayerLevelAndPoints();
-                case 5 -> writePatchNotes();
-                case 6 -> viewPatchNotes();
-                case 7 -> writeNewsLetter();
-                case 8 -> viewNewsLetter();
-                case 0 -> continueLoop = false;
-                default -> System.out.println("Invalid choice. Please try again.");
+            if (player != null && player.getPlayerType() == 2) {
+                switch (choice) {
+                    case 1 -> challenge.startChallenge();
+                    case 2 -> rankingList();
+                    case 3 -> editPlayer();
+                    case 4 -> viewPlayerLevelAndPoints();
+                    case 5 -> writePatchNotes();
+                    case 6 -> viewPatchNotes();
+                    case 7 -> writeNewsLetter();
+                    case 8 -> viewNewsLetter();
+                    case 0 -> continueLoop = false;
+                    default -> System.out.println("Invalid choice. Please try again.");
+                }
+            } else {
+                switch (choice) {
+                    case 1 -> challenge.startChallenge();
+                    case 2 -> rankingList();
+                    case 3 -> editPlayer();
+                    case 4 -> viewPlayerLevelAndPoints();
+                    case 5 -> viewPatchNotes();
+                    case 6 -> viewNewsLetter();
+                    case 0 -> continueLoop = false;
+                    default -> System.out.println("Invalid choice. Please try again.");
+                }
             }
-        } while (continueLoop);
+        }while (continueLoop) ;
     }
     @Override
     public List<String> getEnglishMenuOptions() {
@@ -145,8 +169,8 @@ public class Menu implements MenuService {
         options.add("Check player level and points.");
         options.add("Write patch notes.");
         options.add("View patch notes.");
-        options.add("Write a newsletter");
-        options.add("View newsletters");
+        options.add("Write a newsletter.");
+        options.add("View newsletters.");
         return options;
     }
     @Override
@@ -158,8 +182,8 @@ public class Menu implements MenuService {
         options.add("Kolla spelarnivå och poäng.");
         options.add("Skriv patchanteckningar.");
         options.add("Visa patchanteckningar.");
-        options.add("Skriv nyhetsbrev");
-        options.add("Visa nyhetsbrev");
+        options.add("Skriv nyhetsbrev.");
+        options.add("Visa nyhetsbrev.");
         return options;
     }
 
@@ -168,7 +192,7 @@ public class Menu implements MenuService {
         display.showRankingList();
     }
 
-    //Edit player menu and methods..
+    //Edit player menu and methods.
     private void editPlayer() {
 
         boolean continueLoop = true;

@@ -13,6 +13,9 @@ import java.util.List;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import se.ju23.typespeeder.Entitys.NewsLetterRepo;
+import se.ju23.typespeeder.Entitys.PatchRepo;
+import se.ju23.typespeeder.Entitys.PlayerRepo;
 import se.ju23.typespeeder.Game.ChallengeService;
 import se.ju23.typespeeder.DatabaseAndUtility.EntityManager;
 import se.ju23.typespeeder.Game.DisplayService;
@@ -23,12 +26,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MenuTest {
     @Mock
-    private EntityManager databaseManager;
+    private EntityManager entityManager;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private LoginService loginService;
     private ChallengeService challenge;
     private DisplayService display;
+    @Mock
+    private PlayerRepo playerRepo;
+    @Mock
+    private NewsLetterRepo newsLetterRepo;
+    @Mock
+    private PatchRepo patchRepo;
     @BeforeEach
     public void setUpStreams() {
         System.setOut(new PrintStream(outContent));
@@ -37,9 +46,9 @@ public class MenuTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        loginService = new LoginService(databaseManager);
-        challenge = new ChallengeService(databaseManager);
-        display = new DisplayService(databaseManager);
+        loginService = new LoginService(playerRepo);
+        challenge = new ChallengeService(entityManager);
+        display = new DisplayService(entityManager,patchRepo,newsLetterRepo);
     }
 
 
@@ -92,34 +101,34 @@ public class MenuTest {
     }
     @Test
     public void testDisplayMenuCallsgetEnglishMenuOptionsAndReturnsAtLeastFive() {
-        Menu menu = new Menu(loginService,challenge,display);
+        Menu menu = new Menu(loginService,challenge,display,playerRepo);
         menu.displayMenu();
         assertTrue(menu.getEnglishMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
     }
 
     @Test
     public void testDisplayMenuCallsGetSwedishMenuOptionsAndReturnsAtLeastFive() {
-        Menu menu = new Menu(loginService,challenge,display);
+        Menu menu = new Menu(loginService,challenge,display,playerRepo);
         menu.displayMenu();
         assertTrue(menu.getSwedishMenuOptions().size() >= 5, "'getMenuOptions()' should return at least 5 alternatives.");
     }
 
     @Test
     public void swedishMenuShouldHaveAtLeastFiveOptions() {
-        Menu menu = new Menu(loginService,challenge,display);
+        Menu menu = new Menu(loginService,challenge,display,playerRepo);
         List<String> options = menu.getSwedishMenuOptions();
         assertTrue(options.size() >= 5, "The menu should contain at least 5 alternatives.");
     }
     @Test
     public void englishMenuShouldHaveAtLeastFiveOptions() {
-        Menu menu = new Menu(loginService,challenge,display);
+        Menu menu = new Menu(loginService,challenge,display,playerRepo);
         List<String> options = menu.getEnglishMenuOptions();
         assertTrue(options.size() >= 5, "The menu should contain at least 5 alternatives.");
     }
 
     @Test
     public void menuShouldPrintAtLeastFiveOptions() {
-        new Menu(loginService,challenge,display).displayMenu();
+        new Menu(loginService,challenge,display,playerRepo).displayMenu();
         long count = outContent.toString().lines().count();
         assertTrue(count >= 5, "The menu should print out at least 5 alternatives.");
     }
@@ -132,7 +141,7 @@ public class MenuTest {
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        Menu menu = new Menu(loginService,challenge,display);
+        Menu menu = new Menu(loginService,challenge,display,playerRepo);
         menu.displayMenu();
 
         String selectedLanguage = challenge.selectLanguage();

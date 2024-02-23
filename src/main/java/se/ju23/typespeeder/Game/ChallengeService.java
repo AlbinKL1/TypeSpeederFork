@@ -10,20 +10,20 @@ import java.util.*;
 @Service
 public class ChallengeService {
 
-    private final EntityManager databaseManager;
+    private final EntityManager entityManager;
 
     @Autowired
     public ChallengeService(EntityManager databaseManager) {
-        this.databaseManager = databaseManager;
+        this.entityManager = databaseManager;
     }
 
     //Method to get all the different letters, words, symbols and sentences.
     public void startChallenge() {
         String language = selectLanguage();
-        List<String> letters = (language.equals("English")) ? databaseManager.getEnglishLetters() : databaseManager.getSwedishLetters();
-        List<String> symbols = (language.equals("English")) ? databaseManager.getEnglishSymbols() : databaseManager.getSwedishSymbols();
-        List<String> words = (language.equals("English")) ? databaseManager.getEnglishWords() : databaseManager.getSwedishWords();
-        List<String> sentences = (language.equals("English")) ? databaseManager.getEnglishSentences() : databaseManager.getSwedishSentences();
+        List<String> letters = (language.equals("English")) ? entityManager.getEnglishLetters() : entityManager.getSwedishLetters();
+        List<String> symbols = (language.equals("English")) ? entityManager.getEnglishSymbols() : entityManager.getSwedishSymbols();
+        List<String> words = (language.equals("English")) ? entityManager.getEnglishWords() : entityManager.getSwedishWords();
+        List<String> sentences = (language.equals("English")) ? entityManager.getEnglishSentences() : entityManager.getSwedishSentences();
         selectLevel(letters,symbols,words,sentences);
     }
 
@@ -90,8 +90,9 @@ public class ChallengeService {
         long startTime = System.currentTimeMillis();
         List<String> randomizedList = new ArrayList<>(inputList);
         Collections.shuffle(randomizedList);
-        StringBuilder promptBuilder = new StringBuilder("Type: ");
+        StringBuilder promptBuilder = new StringBuilder("Type this: ");
         Random random = new Random();
+        int lineLength = 0; // Track the length of the current line
         for (String item : randomizedList) {
             char[] chars = item.toCharArray();
             for (int i = 0; i < chars.length; i++) {
@@ -104,9 +105,16 @@ public class ChallengeService {
                     }
                 }
             }
-            promptBuilder.append(chars).append(" ");
+            String word = new String(chars) + " ";
+            if (lineLength + word.length() > 100) {
+                promptBuilder.append("\n");
+                lineLength = 0;
+            }
+            promptBuilder.append(word);
+            lineLength += word.length();
         }
-        System.out.println(promptBuilder.toString());
+        System.out.println(promptBuilder.toString().trim());
+        System.out.print("Enter: ");
 
         Scanner inputScanner = new Scanner(System.in);
         String userInput = inputScanner.nextLine().trim();
@@ -148,8 +156,8 @@ public class ChallengeService {
         System.out.println("\nPoints earned: " + points);
         System.out.println("Experience earned: " + experience);
 
-        int playerId = databaseManager.getPlayerIdByUsername(UtilityService.getLoggedInUsername());
-        databaseManager.insertPointsAndExperience(playerId, points);
+        int playerId = entityManager.getPlayerIdByUsername(UtilityService.getLoggedInUsername());
+        entityManager.insertPointsAndExperience(playerId, points);
     }
 
     //Game methods to play typespeeder.

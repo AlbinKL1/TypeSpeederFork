@@ -16,14 +16,14 @@ import static org.mockito.Mockito.when;
 
 public class ChallengePerformanceTest {
     @Mock
-    private EntityManager databaseManager;
+    private EntityManager entityManager;
     private ChallengeService challenge;
     private static final int MAX_EXECUTION_TIME = 200;
     private static final int MILLISECONDS_CONVERSION = 1_000_000;
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-         challenge = new ChallengeService(databaseManager);
+         challenge = new ChallengeService(entityManager);
     }
     @Test
     public void testStartChallengePerformance() {
@@ -37,7 +37,7 @@ public class ChallengePerformanceTest {
     @Test
     public void testLettersToTypePerformance() {
         List<String> mockLetters = Arrays.asList("a", "b", "c");
-        when(databaseManager.getEnglishLetters()).thenReturn(mockLetters);
+        when(entityManager.getEnglishLetters()).thenReturn(mockLetters);
         long startTime = System.nanoTime();
         long endTime = System.nanoTime();
         long duration = (endTime - startTime) / MILLISECONDS_CONVERSION;

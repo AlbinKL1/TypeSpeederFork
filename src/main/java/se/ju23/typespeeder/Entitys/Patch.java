@@ -11,39 +11,43 @@ import java.time.LocalDateTime;
 public class Patch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    public String patchversion;
-    public LocalDateTime releasedatetime;
+    public String patchVersion;
+    public LocalDateTime releaseDateTime;
     public String notes;
 
-    //Constructor
+    //Constructors
+    public Patch(String patchVersion, LocalDateTime releaseDateTime, String notes) {
+        this.patchVersion = patchVersion;
+        this.releaseDateTime = releaseDateTime;
+        this.notes = notes;
+    }
     public Patch() {
-        this.releasedatetime = LocalDateTime.now();
+
     }
 
     // Getters
-    public Long getId() {
+    public int getId() {
         return id;
     }
-    public String getPatchversion() {
-        return patchversion;
+    public String getPatchVersion() {
+        return patchVersion;
     }
-    public void setPatchversion(String patchVersion) {
-        this.patchversion = patchVersion;
+    public void setPatchVersion(String patchVersion) {
+        this.patchVersion = patchVersion;
     }
-    public LocalDateTime getReleasedatetime() {
-        return releasedatetime;
+    public LocalDateTime getReleaseDateTime() {
+        return releaseDateTime;
     }
 
     //Setters
-    public void setReleasedatetime(LocalDateTime releaseDateTime) {
-        this.releasedatetime = releaseDateTime;
+    public void setReleaseDateTime(LocalDateTime releaseDateTime) {
+        this.releaseDateTime = releaseDateTime;
     }
     public String getNotes() {
         return notes;
     }
-
     public void setNotes(String notes) {
         this.notes = notes;
     }

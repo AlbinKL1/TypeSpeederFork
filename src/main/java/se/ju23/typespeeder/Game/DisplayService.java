@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.ju23.typespeeder.DatabaseAndUtility.EntityManager;
 import se.ju23.typespeeder.DatabaseAndUtility.UtilityService;
+import se.ju23.typespeeder.Entitys.NewsLetterRepo;
 import se.ju23.typespeeder.Entitys.Newsletter;
 import se.ju23.typespeeder.Entitys.Patch;
+import se.ju23.typespeeder.Entitys.PatchRepo;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,15 +15,19 @@ import java.util.List;
 
 @Service
 public class DisplayService {
-    private EntityManager databaseManager;
+    private EntityManager entityManager;
+    private PatchRepo patchRepo;
+    private NewsLetterRepo newsLetterRepo;
     @Autowired
-    public DisplayService(EntityManager databaseManager) {
-        this.databaseManager = databaseManager;
+    public DisplayService(EntityManager databaseManager,PatchRepo patchRepo,NewsLetterRepo newsLetterRepo) {
+        this.entityManager = databaseManager;
+        this.patchRepo = patchRepo;
+        this.newsLetterRepo = newsLetterRepo;
     }
 
     //Points and level showcase.
     public void showRankingList() {
-        List<Object[]> rankingList = databaseManager.getRankingList();
+        List<Object[]> rankingList = entityManager.getRankingList();
         System.out.println("\nRanking List\n");
         for (int i = 0; i < rankingList.size(); i++) {
             Object[] playerInfo = rankingList.get(i);
@@ -31,10 +37,10 @@ public class DisplayService {
         }
     }
     public void viewPlayerLevelAndPoints(String loggedInUsername) {
-        String playerName = databaseManager.getPlayerDisplayName(loggedInUsername);
-        int playerId = databaseManager.getPlayerIdByUsername(loggedInUsername);
-        int playerLevel = databaseManager.getPlayerLevel(playerId);
-        int totalPoints = databaseManager.getTotalPoints(playerId);
+        String playerName = entityManager.getPlayerDisplayName(loggedInUsername);
+        int playerId = entityManager.getPlayerIdByUsername(loggedInUsername);
+        int playerLevel = entityManager.getPlayerLevel(playerId);
+        int totalPoints = entityManager.getTotalPoints(playerId);
         System.out.println("\nPlayer: " + playerName);
         System.out.println("Player Level: " + playerLevel);
         System.out.println("Total Points: " + totalPoints);
@@ -53,19 +59,20 @@ public class DisplayService {
         LocalDateTime releaseDateTime = LocalDateTime.now();
         System.out.println("Current date and time: " + releaseDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
-        databaseManager.createPatchNote(patchVersion, releaseDateTime, notes);
+        Patch patch = new Patch(patchVersion, releaseDateTime, notes);
+        patchRepo.save(patch);
         System.out.println("Patch notes created successfully.");
 
     }
     public void viewPatchNotes() {
-        List<Patch> patchNotes = databaseManager.getAllPatchNotes();
+        List<Patch> patchNotes = entityManager.getAllPatchNotes();
         if (patchNotes.isEmpty()) {
             System.out.println("\nNo patch notes available.");
         } else {
             System.out.println("\nPatch Notes\n");
             for (Patch patchNote : patchNotes) {
-                System.out.println("Version: " + patchNote.getPatchversion());
-                System.out.println("Release Date: " + patchNote.getReleasedatetime());
+                System.out.println("Version: " + patchNote.getPatchVersion());
+                System.out.println("Release Date: " + patchNote.getReleaseDateTime());
                 System.out.println("Notes: " + patchNote.getNotes());
                 System.out.println();
             }
@@ -82,18 +89,19 @@ public class DisplayService {
         System.out.print("Enter newsletter content: ");
         String content = UtilityService.input.nextLine();
 
-        databaseManager.createNewsLetter(publishDateTime, content);
+        Newsletter newsLetter = new Newsletter(publishDateTime,content);
+        newsLetterRepo.save(newsLetter);
         System.out.println("Patch notes created successfully.");
 
     }
     public void viewNewsLetter(){
-        List<Newsletter> newsLetters = databaseManager.getAllNewsletters();
+        List<Newsletter> newsLetters = entityManager.getAllNewsletters();
         if (newsLetters.isEmpty()) {
             System.out.println("\nNo newsletter available.");
         } else {
             System.out.println("\nNewsletters\n");
             for (Newsletter newsLetter : newsLetters) {
-                System.out.println("Publish Date: " + newsLetter.getPublishdatetime());
+                System.out.println("Publish Date: " + newsLetter.getPublishDateTime());
                 System.out.println("Content: " + newsLetter.getContent());
                 System.out.println();
             }

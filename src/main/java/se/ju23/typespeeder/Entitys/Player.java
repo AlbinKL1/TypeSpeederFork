@@ -12,7 +12,19 @@ public class Player {
     private int id;
     private String username;
     private String password;
-    private String displayname;
+    private String displayName;
+    private int playerType;
+
+    //Constructors
+    public Player(String username, String password, String displayName,int playerType) {
+        this.username = username;
+        this.password = password;
+        this.displayName = displayName;
+        this.playerType = playerType;
+    }
+    public Player() {
+
+    }
 
     // Getters
     public int getId() {
@@ -24,8 +36,11 @@ public class Player {
     public String getPassword() {
         return password;
     }
-    public String getDisplayname() {
-        return displayname;
+    public String getDisplayName() {
+        return displayName;
+    }
+    public int getPlayerType() {
+        return playerType;
     }
 
     //Setters
@@ -35,7 +50,10 @@ public class Player {
     public void setPassword(String password) {
         this.password = password;
     }
-    public void setDisplayname(String displayname) {
-        this.displayname = displayname;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+    public void setPlayerType(int playerType) {
+        this.playerType = playerType;
     }
 }

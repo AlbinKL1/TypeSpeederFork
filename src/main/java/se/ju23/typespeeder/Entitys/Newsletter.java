@@ -13,32 +13,35 @@ public class Newsletter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private static int MIN_CONTENT_LENGTH = 100;
     private static int MAX_CONTENT_LENGTH = 200;
 
-    public LocalDateTime publishdatetime;
+    public LocalDateTime publishDateTime;
     public String content;
 
-    // Constructor
+    // Constructors
+    public Newsletter(LocalDateTime publishDateTime, String content) {
+        this.publishDateTime = publishDateTime;
+        this.content = content;
+    }
     public Newsletter() {
-        this.publishdatetime = LocalDateTime.now();
+
     }
 
     // Getters
     public int getId() {
         return id;
     }
-    public LocalDateTime getPublishdatetime() {
-        return publishdatetime;
+    public LocalDateTime getPublishDateTime() {
+        return publishDateTime;
     }
     public String getContent() {
         return content;
     }
 
     // Setters
-    public void setPublishdatetime(LocalDateTime publishdatetime) {
-        this.publishdatetime = publishdatetime;
+    public void setPublishDateTime(LocalDateTime publishDateTime) {
+        this.publishDateTime = publishDateTime;
     }
     public void setContent(String content) {
         if (content == null || content.length() < MIN_CONTENT_LENGTH || content.length() > MAX_CONTENT_LENGTH) {

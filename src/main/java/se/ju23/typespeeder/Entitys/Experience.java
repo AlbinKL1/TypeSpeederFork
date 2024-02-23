@@ -10,23 +10,23 @@ public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id ;
-    private int playerid;
+    private int playerId;
     private int experience;
 
     //Getters
     public int getId() {
         return id;
     }
-    public int getPlayerid() {
-        return playerid;
+    public int getPlayerId() {
+        return playerId;
     }
     public int getExperience() {
         return experience;
     }
 
     //Setters
-    public void setPlayerid(int playerid) {
-        this.playerid = playerid;
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
     }
     public void setExperience(int experience) {
         this.experience = experience;

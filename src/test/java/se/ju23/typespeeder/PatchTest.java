@@ -26,14 +26,14 @@ public class PatchTest {
         try {
             Class<?> someClass = Class.forName("se.ju23.typespeeder.Entitys.Patch");
 
-            Field patchVersion = someClass.getDeclaredField("patchversion");
+            Field patchVersion = someClass.getDeclaredField("patchVersion");
             assertNotNull(patchVersion, "Field 'patchVersion' should exist in the Patch class.");
             assertTrue(patchVersion.getType().equals(String.class), "Field 'patchVersion' should be of type String.");
 
-            Field realeaseDateTime = someClass.getDeclaredField("releasedatetime");
-            assertNotNull(realeaseDateTime, "Field 'realeaseDateTime' should exist in Patch class.");
+            Field realeaseDateTime = someClass.getDeclaredField("releaseDateTime");
+            assertNotNull(realeaseDateTime, "Field 'releaseDateTime' should exist in Patch class.");
 
-            assertTrue(realeaseDateTime.getType().equals(LocalDateTime.class), "Field 'realeaseDateTime' should be of type LocalDateTime.");
+            assertTrue(realeaseDateTime.getType().equals(LocalDateTime.class), "Field 'releaseDateTime' should be of type LocalDateTime.");
 
             Object instance = someClass.getDeclaredConstructor().newInstance();
 
@@ -44,10 +44,10 @@ public class PatchTest {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formattedDateTime = dateTimeValue.format(formatter);
-            assertEquals(releaseDateTimeValue.format(formatter), formattedDateTime, "'realeaseDateTime' field should have format 'yyyy-MM-dd HH:mm:ss'.");
+            assertEquals(releaseDateTimeValue.format(formatter), formattedDateTime, "'releaseDateTime' field should have format 'yyyy-MM-dd HH:mm:ss'.");
 
-            Method getterMethod = someClass.getDeclaredMethod("getReleasedatetime");
-            assertNotNull(getterMethod, "Getter method for field 'realeaseDateTime' should exist.");
+            Method getterMethod = someClass.getDeclaredMethod("getReleaseDateTime");
+            assertNotNull(getterMethod, "Getter method for field 'releaseDateTime' should exist.");
 
         } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException e) {
             fail("Error occurred while testing properties of Patch.", e);

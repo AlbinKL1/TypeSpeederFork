@@ -4,6 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import se.ju23.typespeeder.Entitys.NewsLetterRepo;
+import se.ju23.typespeeder.Entitys.PatchRepo;
+import se.ju23.typespeeder.Entitys.PlayerRepo;
 import se.ju23.typespeeder.Game.ChallengeService;
 import se.ju23.typespeeder.DatabaseAndUtility.EntityManager;
 import se.ju23.typespeeder.Game.DisplayService;
@@ -20,26 +23,32 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MenuPerformanceTest {
     @Mock
-    private EntityManager databaseManager;
+    private EntityManager entityManager;
     private static final int MAX_EXECUTION_TIME_MENU = 1;
     private static final int MAX_EXECUTION_TIME_LANGUAGE_SELECTION = 100;
     private static final int MILLISECONDS_CONVERSION = 1_000_000;
     private LoginService loginService;
     private ChallengeService challenge;
     private DisplayService display;
+    @Mock
+    private PlayerRepo playerRepo;
+    @Mock
+    private NewsLetterRepo newsLetterRepo;
+    @Mock
+    private PatchRepo patchRepo;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        loginService = new LoginService(databaseManager);
-        challenge = new ChallengeService(databaseManager);
-        display = new DisplayService(databaseManager);
+        loginService = new LoginService(playerRepo);
+        challenge = new ChallengeService(entityManager);
+        display = new DisplayService(entityManager, patchRepo, newsLetterRepo);
     }
     @Test
     public void testGetSwedishMenuOptionsExecutionTime() {
         long startTime = System.nanoTime();
-        Menu menu = new Menu(loginService,challenge,display);
+        Menu menu = new Menu(loginService,challenge,display,playerRepo);
         menu.getSwedishMenuOptions();
         long endTime = System.nanoTime();
 
@@ -50,7 +59,7 @@ public class MenuPerformanceTest {
     @Test
     public void testGetEnglishMenuOptionsExecutionTime() {
         long startTime = System.nanoTime();
-        Menu menu = new Menu(loginService,challenge,display);
+        Menu menu = new Menu(loginService,challenge,display,playerRepo);
         menu.getEnglishMenuOptions();
         long endTime = System.nanoTime();
 
@@ -58,8 +67,6 @@ public class MenuPerformanceTest {
 
         assertTrue(duration <= MAX_EXECUTION_TIME_MENU, "Menu display took too long. Execution time: " + duration + " ms.");
     }
-
-
      @Test
     public void testUserCanChooseSwedishLanguageAndPerformance() {
          String input = "2\n";
@@ -71,7 +78,7 @@ public class MenuPerformanceTest {
 
          long startTime = System.nanoTime();
 
-         Menu menu = new Menu(loginService,challenge,display);
+         Menu menu = new Menu(loginService,challenge,display,playerRepo);
          menu.displayMenu();
 
          long endTime = System.nanoTime();
